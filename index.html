@@ -22,8 +22,8 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  gap:0px;
 }
-
 /* brackets */
 .bracket{
   font-size:28px;
@@ -45,12 +45,18 @@ input{
   border:none;
   outline:none;
   background:transparent;
-  font-size:20px;
+  font-size:28px;
+  height:28px;
+  line-height:28px;
   text-align:center;
-  letter-spacing:2px;
-  width:40px;
+  letter-spacing:4px;
+  width:48px;
+min-width:48px;
+
+  color:transparent;      /* hides text */
+  text-shadow:0 0 0 #111; /* keeps cursor behavior visible */
+
   transition:width 0.15s ease;
-  color:#111;
 }
 
 /* success / fail states */
@@ -90,7 +96,7 @@ input{
 <div class="wrapper">
   <span class="bracket">[</span>
 
-  <input type="password" id="code" oninput="expand()" onkeydown="handle(event)">
+  <input type="text" id="code" oninput="expand()" onkeydown="handle(event)" autocomplete="off">
 
   <span class="bracket">]</span>
 
