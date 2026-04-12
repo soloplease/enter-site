@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Enter</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  background:#f2f2ee; /* soft off-white */
+  font-family:Arial, sans-serif;
+}
+
+/* wrapper for brackets + input */
+.wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* brackets */
+.bracket{
+  font-size:28px;
+  position:absolute;
+  top:0;
+  color:#111;
+}
+
+.left{
+  left:-18px;
+}
+
+.right{
+  right:-18px;
+}
+
+/* input */
+input{
+  border:none;
+  outline:none;
+  background:transparent;
+  font-size:20px;
+  text-align:center;
+  letter-spacing:2px;
+  width:40px;
+  transition:width 0.15s ease;
+  color:#111;
+}
+
+/* success / fail states */
+.valid{
+  color:#111;
+}
+
+.invalid{
+  color:#111;
+}
+
+/* name */
+.name{
+  margin-top:40px;
+  font-weight:bold;
+  letter-spacing:8px;
+  font-size:14px;
+  color:#111;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="bracket left">[</div>
+  <input type="password" id="code" oninput="expand()" onkeydown="handle(event)">
+  <div class="bracket right">]</div>
+</div>
+
+<div class="name">YOUR NAME</div>
+
+<script>
+const codes = ["axis","strike","line"];
+
+const input = document.getElementById("code");
+
+/* expand from center */
+function expand(){
+  let len = input.value.length;
+  input.style.width = (40 + len * 14) + "px";
+}
+
+/* handle enter */
+function handle(e){
+  if(e.key === "Enter"){
+    if(codes.includes(input.value)){
+      input.value = "✓";
+
+      setTimeout(()=>{
+        window.location = "gallery.html";
+      }, 700);
+
+    } else {
+      input.value = "✕";
+
+      setTimeout(()=>{
+        input.value = "";
+        expand();
+      }, 700);
+    }
+  }
+}
+</script>
+
+</body>
+</html>
