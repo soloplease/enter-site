@@ -22,22 +22,13 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:0px;
+  gap:6px;
 }
 /* brackets */
 .bracket{
   font-size:28px;
-  position:absolute;
-  top:0;
   color:#111;
-}
-
-.left{
-  left:-18px;
-}
-
-.right{
-  right:-18px;
+  line-height:1;
 }
 
 /* input */
@@ -50,11 +41,11 @@ input{
   line-height:28px;
   text-align:center;
   letter-spacing:4px;
-  width:48px;
-min-width:48px;
 
-  color:transparent;      /* hides text */
-  text-shadow:0 0 0 #111; /* keeps cursor behavior visible */
+  width:60px;
+  min-width:60px;
+
+  color:#111;
 
   transition:width 0.15s ease;
 }
@@ -100,10 +91,9 @@ min-width:48px;
 
   <span class="bracket">]</span>
 
-  <!-- status box -->
   <div id="statusBox"></div>
 </div>
-
+  
 <div class="name">SOLOMON ROUSSEAU</div>
 
 <script>
