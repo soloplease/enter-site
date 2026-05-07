@@ -5,6 +5,7 @@
 <title>Selected Works</title>
 
 <style>
+
 body{
   margin:0;
   overflow:hidden;
@@ -42,7 +43,7 @@ body{
   cursor:pointer;
 }
 
-/* MAIN VIEW */
+/* VIEWER */
 .viewer{
   width:100vw;
   height:100vh;
@@ -60,7 +61,7 @@ body{
   transition:transform 0.45s ease;
 }
 
-/* IMAGE BLOCK */
+/* WORK BLOCK */
 .work{
   flex-shrink:0;
 }
@@ -73,9 +74,9 @@ body{
   transition:transform 0.35s ease;
 }
 
-/* ZOOM */
+/* ACTIVE IMAGE */
 .work img.active{
-  transform:scale(1.15);
+  transform:scale(1.12);
 }
 
 /* TEXT */
@@ -85,6 +86,7 @@ body{
   line-height:1.4;
   text-align:left;
 }
+
 </style>
 </head>
 
@@ -102,7 +104,7 @@ body{
   <div class="track" id="track">
 
     <div class="work">
-      <img src="SR-rows">
+      <img src="SR-rows.JPG">
       <div class="caption">
         Untitled (scatter)<br>
         Steel<br>
@@ -112,7 +114,7 @@ body{
     </div>
 
     <div class="work">
-      <img src="SR-rows-D1">
+      <img src="SR-rows-D1.JPG">
       <div class="caption">
         Untitled (coil I)<br>
         Steel<br>
@@ -122,7 +124,7 @@ body{
     </div>
 
     <div class="work">
-      <img src="SR-rows-D2">
+      <img src="SR-rows-D2.JPG">
       <div class="caption">
         Untitled (coil IX)<br>
         Steel<br>
@@ -132,7 +134,7 @@ body{
     </div>
 
     <div class="work">
-      <img src="SR-rows-D3">
+      <img src="SR-rows-D3.JPG">
       <div class="caption">
         Detail<br>
         Untitled (coil IX)<br>
@@ -153,16 +155,17 @@ const works = document.querySelectorAll(".work");
 
 let current = 0;
 
-/* position system */
+/* UPDATE POSITION */
 function updateSlider(){
 
-  const workWidth = works[0].offsetWidth + 40;
+  const workWidth =
+    works[0].offsetWidth + 40;
 
   track.style.transform =
     `translateX(${-current * workWidth}px)`;
 }
 
-/* infinite navigation */
+/* CONTINUOUS LOOP */
 function move(dir){
 
   current += dir;
@@ -178,10 +181,9 @@ function move(dir){
   updateSlider();
 }
 
-/* click left/right side */
+/* CLICK NAVIGATION */
 document.addEventListener("click", (e)=>{
 
-  /* ignore menu clicks */
   if(e.target.closest(".menu")) return;
 
   if(e.clientX > window.innerWidth / 2){
@@ -191,7 +193,7 @@ document.addEventListener("click", (e)=>{
   }
 });
 
-/* image zoom */
+/* IMAGE ENLARGE */
 document.querySelectorAll("img").forEach(img=>{
 
   img.addEventListener("click", (e)=>{
