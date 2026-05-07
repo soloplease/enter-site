@@ -1,1 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Selected Works</title>
 
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background:#f2f2ee;
+  font-family:Arial, sans-serif;
+}
+
+/* TITLE */
+.title{
+  position:fixed;
+  top:10px;
+  width:100%;
+  text-align:center;
+  font-size:14px;
+  font-weight:bold;
+}
+
+/* LEFT MENU */
+.menu{
+  position:fixed;
+  top:40px;
+  left:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.menu div{
+  cursor:pointer;
+}
+
+/* SLIDER */
+.slider{
+  position:absolute;
+  top:60px;
+  width:100%;
+  height:calc(100vh - 60px);
+  overflow:hidden;
+}
+
+/* ROWS */
+.row{
+  display:flex;
+  gap:20px;
+  padding:20px;
+  transition:transform 0.4s ease;
+}
+
+.row img{
+  height:40vh;
+  cursor:pointer;
+}
+
+/* second row cut off */
+.row.bottom{
+  transform:translateY(-20vh);
+}
+
+/* TEXT */
+.caption{
+  font-size:12px;
+  margin-top:6px;
+  text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<div class="title">SELECTED WORKS</div>
+
+<div class="menu">
+  <div onclick="location.href='artist.html'">ARTIST</div>
+  <div>SELECTED EXHIBITIONS + RESIDENCIES</div>
+</div>
+
+<div class="slider" id="slider">
+
+  <!-- TOP ROW -->
+  <div class="row" id="row1">
+
+    <div>
+      <img src="ZUN_8808.JPG">
+      <div class="caption">
+        Untitled (scatter)<br>
+        Steel<br>
+        375 sq. ft<br>
+        2026
+      </div>
+    </div>
+
+    <div>
+      <img src="COIL;GIOSROOM-EXHIBIT.webp">
+      <div class="caption">
+        Untitled (coil I)<br>
+        Steel<br>
+        12 in. D x 3.5 in. W<br>
+        2024
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="row bottom" id="row2">
+
+    <div>
+      <img src="ZUN_8647.JPG">
+      <div class="caption">
+        Untitled (coil IX)<br>
+        Steel<br>
+        23ft D x 1.6ft W<br>
+        2026
+      </div>
+    </div>
+
+    <div>
+      <img src="ZUN_8703.JPG">
+      <div class="caption">
+        Detail<br>
+        Untitled (coil IX)<br>
+        Steel<br>
+        23ft D x 1.6ft W<br>
+        2026
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+let offset = 0;
+
+function move(dir){
+  offset += dir * 200;
+  document.getElementById("row1").style.transform = `translateX(${offset}px)`;
+  document.getElementById("row2").style.transform = `translateX(${offset}px)`;
+}
+
+/* click navigation */
+document.addEventListener("click", (e)=>{
+  if(e.clientX > window.innerWidth/2){
+    move(-1);
+  } else {
+    move(1);
+  }
+});
+
+/* zoom */
+document.querySelectorAll("img").forEach(img=>{
+  img.onclick = ()=>{
+    img.style.height = "80vh";
+  }
+});
+</script>
+
+</body>
+</html>
