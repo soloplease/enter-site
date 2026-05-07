@@ -1,216 +1,109 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Selected Works</title>
-
-<style>
-
-body{
-  margin:0;
-  overflow:hidden;
-  background:#f2f2ee;
-  font-family:Arial, sans-serif;
-  color:#111;
-}
-
-/* TITLE */
-.title{
-  position:fixed;
-  top:12px;
-  width:100%;
-  text-align:center;
-  font-size:14px;
-  font-weight:bold;
-  letter-spacing:1px;
-  z-index:10;
-}
-
-/* LEFT MENU */
-.menu{
-  position:fixed;
-  top:40px;
-  left:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  font-size:14px;
-  font-weight:bold;
-  z-index:10;
-}
-
-.menu div{
-  cursor:pointer;
-}
-
-/* VIEWER */
-.viewer{
-  width:100vw;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  overflow:hidden;
-}
-
-/* TRACK */
-.track{
-  display:flex;
-  align-items:flex-start;
-  gap:40px;
-  padding-left:120px;
-  transition:transform 0.45s ease;
-}
-
-/* WORK BLOCK */
-.work{
-  flex-shrink:0;
-}
-
-/* IMAGES */
-.work img{
-  height:72vh;
-  display:block;
-  cursor:pointer;
-  transition:transform 0.35s ease;
-}
-
-/* ACTIVE IMAGE */
-.work img.active{
-  transform:scale(1.12);
-}
-
-/* TEXT */
-.caption{
-  margin-top:10px;
-  font-size:12px;
-  line-height:1.4;
-  text-align:left;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="title">SELECTED WORKS</div>
-
-<div class="menu">
-  <div onclick="location.href='artist.html'">ARTIST</div>
-  <div>SELECTED EXHIBITIONS + RESIDENCIES</div>
-</div>
-
-<div class="viewer">
-
-  <div class="track" id="track">
-
-    <div class="work">
-      <img src="SR-rows.JPG">
-      <div class="caption">
-        Untitled (scatter)<br>
-        Steel<br>
-        375 sq. ft<br>
-        2026
-      </div>
-    </div>
-
-    <div class="work">
-      <img src="SR-rows-D1.JPG">
-      <div class="caption">
-        Untitled (coil I)<br>
-        Steel<br>
-        12 in. D x 3.5 in. W<br>
-        2024
-      </div>
-    </div>
-
-    <div class="work">
-      <img src="SR-rows-D2.JPG">
-      <div class="caption">
-        Untitled (coil IX)<br>
-        Steel<br>
-        23ft D x 1.6ft W<br>
-        2026
-      </div>
-    </div>
-
-    <div class="work">
-      <img src="SR-rows-D3.JPG">
-      <div class="caption">
-        Detail<br>
-        Untitled (coil IX)<br>
-        Steel<br>
-        23ft D x 1.6ft W<br>
-        2026
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
 <script>
-
 const track = document.getElementById("track");
-const works = document.querySelectorAll(".work");
+
+const works = [
+{
+img:"SR-rows.JPG",
+title:"Untitled (scatter)",
+material:"Steel",
+size:"375 sq. ft",
+year:"2026"
+},
+{
+img:"SR-rows-D1.JPG",
+title:"Untitled (coil I)",
+material:"Steel",
+size:"12 in. D x 3.5 in. W",
+year:"2024"
+},
+{
+img:"SR-rows-D2.JPG",
+title:"Untitled (coil IX)",
+material:"Steel",
+size:"23ft D x 1.6ft W",
+year:"2026"
+},
+{
+img:"SR-rows-D3.JPG",
+title:"Detail — Untitled (coil IX)",
+material:"Steel",
+size:"23ft D x 1.6ft W",
+year:"2026"
+}
+];
 
 let current = 0;
 
-/* UPDATE POSITION */
-function updateSlider(){
+function buildSlides(){
 
-  const workWidth =
-    works[0].offsetWidth + 40;
+track.innerHTML = "";
 
-  track.style.transform =
-    `translateX(${-current * workWidth}px)`;
-}
+works.forEach(work=>{
 
-/* CONTINUOUS LOOP */
-function move(dir){
+const slide = document.createElement("div");
+slide.className = "slide";
 
-  current += dir;
+slide.innerHTML = `
+<div class="imageWrap">
+<img src="${work.img}">
+</div>
 
-  if(current < 0){
-    current = works.length - 1;
-  }
+<div class="caption">
+<div>${work.title}</div>
+<div>${work.material}</div>
+<div>${work.size}</div>
+<div>${work.year}</div>
+</div>
+`;
 
-  if(current >= works.length){
-    current = 0;
-  }
+track.appendChild(slide);
 
-  updateSlider();
-}
+const img = slide.querySelector("img");
 
-/* CLICK NAVIGATION */
-document.addEventListener("click", (e)=>{
+img.addEventListener("click", ()=>{
 
-  if(e.target.closest(".menu")) return;
+document.getElementById("overlay").style.display = "flex";
+document.getElementById("overlayImg").src = work.img;
 
-  if(e.clientX > window.innerWidth / 2){
-    move(1);
-  } else {
-    move(-1);
-  }
+document.getElementById("overlayCaption").innerHTML = `
+<div>${work.title}</div>
+<div>${work.material}</div>
+<div>${work.size}</div>
+<div>${work.year}</div>
+`;
+
 });
 
-/* IMAGE ENLARGE */
-document.querySelectorAll("img").forEach(img=>{
-
-  img.addEventListener("click", (e)=>{
-
-    e.stopPropagation();
-
-    document
-      .querySelectorAll("img")
-      .forEach(i => i.classList.remove("active"));
-
-    img.classList.add("active");
-  });
 });
 
-window.onload = updateSlider;
+update();
+}
 
+function update(){
+track.style.transform = `translateX(calc(-${current * 100}vw + 240px))`;
+}
+
+function next(){
+current = (current + 1) % works.length;
+update();
+}
+
+function prev(){
+current = (current - 1 + works.length) % works.length;
+update();
+}
+
+document.getElementById("rightZone").onclick = next;
+document.getElementById("leftZone").onclick = prev;
+
+document.addEventListener("keydown",(e)=>{
+if(e.key==="ArrowRight") next();
+if(e.key==="ArrowLeft") prev();
+});
+
+document.getElementById("overlay").onclick = ()=>{
+document.getElementById("overlay").style.display = "none";
+};
+
+buildSlides();
 </script>
-
-</body>
-</html>
