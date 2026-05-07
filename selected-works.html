@@ -10,16 +10,19 @@ body{
   overflow:hidden;
   background:#f2f2ee;
   font-family:Arial, sans-serif;
+  color:#111;
 }
 
 /* TITLE */
 .title{
   position:fixed;
-  top:10px;
+  top:12px;
   width:100%;
   text-align:center;
   font-size:14px;
   font-weight:bold;
+  letter-spacing:1px;
+  z-index:10;
 }
 
 /* LEFT MENU */
@@ -32,43 +35,54 @@ body{
   gap:10px;
   font-size:14px;
   font-weight:bold;
+  z-index:10;
 }
 
 .menu div{
   cursor:pointer;
 }
 
-/* SLIDER */
-.slider{
-  position:absolute;
-  top:60px;
-  width:100%;
-  height:calc(100vh - 60px);
+/* MAIN VIEW */
+.viewer{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  align-items:center;
   overflow:hidden;
 }
 
-/* ROWS */
-.row{
+/* TRACK */
+.track{
   display:flex;
-  gap:20px;
-  padding:20px;
-  transition:transform 0.4s ease;
+  align-items:flex-start;
+  gap:40px;
+  padding-left:120px;
+  transition:transform 0.45s ease;
 }
 
-.row img{
-  height:40vh;
+/* IMAGE BLOCK */
+.work{
+  flex-shrink:0;
+}
+
+/* IMAGES */
+.work img{
+  height:72vh;
+  display:block;
   cursor:pointer;
+  transition:transform 0.35s ease;
 }
 
-/* second row cut off */
-.row.bottom{
-  transform:translateY(-20vh);
+/* ZOOM */
+.work img.active{
+  transform:scale(1.15);
 }
 
 /* TEXT */
 .caption{
+  margin-top:10px;
   font-size:12px;
-  margin-top:6px;
+  line-height:1.4;
   text-align:left;
 }
 </style>
@@ -83,13 +97,12 @@ body{
   <div>SELECTED EXHIBITIONS + RESIDENCIES</div>
 </div>
 
-<div class="slider" id="slider">
+<div class="viewer">
 
-  <!-- TOP ROW -->
-  <div class="row" id="row1">
+  <div class="track" id="track">
 
-    <div>
-      <img src="ZUN_8808.JPG">
+    <div class="work">
+      <img src="SR-rows">
       <div class="caption">
         Untitled (scatter)<br>
         Steel<br>
@@ -98,8 +111,8 @@ body{
       </div>
     </div>
 
-    <div>
-      <img src="COIL;GIOSROOM-EXHIBIT.webp">
+    <div class="work">
+      <img src="SR-rows-D1">
       <div class="caption">
         Untitled (coil I)<br>
         Steel<br>
@@ -108,13 +121,8 @@ body{
       </div>
     </div>
 
-  </div>
-
-  <!-- BOTTOM ROW -->
-  <div class="row bottom" id="row2">
-
-    <div>
-      <img src="ZUN_8647.JPG">
+    <div class="work">
+      <img src="SR-rows-D2">
       <div class="caption">
         Untitled (coil IX)<br>
         Steel<br>
@@ -123,8 +131,8 @@ body{
       </div>
     </div>
 
-    <div>
-      <img src="ZUN_8703.JPG">
+    <div class="work">
+      <img src="SR-rows-D3">
       <div class="caption">
         Detail<br>
         Untitled (coil IX)<br>
@@ -139,29 +147,67 @@ body{
 </div>
 
 <script>
-let offset = 0;
 
-function move(dir){
-  offset += dir * 200;
-  document.getElementById("row1").style.transform = `translateX(${offset}px)`;
-  document.getElementById("row2").style.transform = `translateX(${offset}px)`;
+const track = document.getElementById("track");
+const works = document.querySelectorAll(".work");
+
+let current = 0;
+
+/* position system */
+function updateSlider(){
+
+  const workWidth = works[0].offsetWidth + 40;
+
+  track.style.transform =
+    `translateX(${-current * workWidth}px)`;
 }
 
-/* click navigation */
+/* infinite navigation */
+function move(dir){
+
+  current += dir;
+
+  if(current < 0){
+    current = works.length - 1;
+  }
+
+  if(current >= works.length){
+    current = 0;
+  }
+
+  updateSlider();
+}
+
+/* click left/right side */
 document.addEventListener("click", (e)=>{
-  if(e.clientX > window.innerWidth/2){
-    move(-1);
-  } else {
+
+  /* ignore menu clicks */
+  if(e.target.closest(".menu")) return;
+
+  if(e.clientX > window.innerWidth / 2){
     move(1);
+  } else {
+    move(-1);
   }
 });
 
-/* zoom */
+/* image zoom */
 document.querySelectorAll("img").forEach(img=>{
-  img.onclick = ()=>{
-    img.style.height = "80vh";
-  }
+
+  img.addEventListener("click", (e)=>{
+
+    e.stopPropagation();
+
+    document
+      .querySelectorAll("img")
+      .forEach(i => i.classList.remove("active"));
+
+    img.classList.add("active");
+  });
 });
+
+window.onload = updateSlider;
+
 </script>
 
 </body>
