@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>Selected Works</title>
 
 <style>
@@ -13,9 +12,10 @@ overflow:hidden;
 background:#f2f2ee;
 font-family:Arial,sans-serif;
 color:#111;
+cursor:default;
 }
 
-/* title */
+/* TITLE */
 
 .title{
 position:fixed;
@@ -27,7 +27,7 @@ font-weight:bold;
 z-index:30;
 }
 
-/* sidebar */
+/* SIDEBAR */
 
 .sidebar{
 position:fixed;
@@ -46,13 +46,16 @@ font-size:14px;
 font-weight:bold;
 }
 
-/* slideshow */
+/* VIEWPORT */
 
 .viewport{
 width:100vw;
 height:100vh;
 overflow:hidden;
+position:relative;
 }
+
+/* TRACK */
 
 .track{
 display:flex;
@@ -60,7 +63,10 @@ height:100vh;
 align-items:center;
 padding-left:240px;
 transition:transform .45s ease;
+will-change:transform;
 }
+
+/* SLIDE */
 
 .slide{
 min-width:100vw;
@@ -72,7 +78,7 @@ padding-left:40px;
 box-sizing:border-box;
 }
 
-/* image */
+/* IMAGE */
 
 .imageWrap{
 height:72vh;
@@ -84,15 +90,21 @@ align-items:center;
 max-height:72vh;
 max-width:88vw;
 object-fit:contain;
-cursor:pointer;
+cursor:grab;
 transition:transform .25s ease;
+user-select:none;
+-webkit-user-drag:none;
+}
+
+.imageWrap img:active{
+cursor:grabbing;
 }
 
 .imageWrap img:hover{
 transform:scale(1.01);
 }
 
-/* caption */
+/* CAPTION */
 
 .caption{
 margin-top:14px;
@@ -100,12 +112,12 @@ font-size:13px;
 line-height:1.5;
 }
 
-/* overlay zoom */
+/* OVERLAY */
 
 #overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.9);
+background:rgba(0,0,0,.92);
 
 display:none;
 align-items:center;
@@ -133,7 +145,7 @@ line-height:1.5;
 color:#f2f2ee;
 }
 
-/* navigation zones */
+/* NAVIGATION ZONES */
 
 #leftZone,
 #rightZone{
@@ -141,16 +153,51 @@ position:fixed;
 top:0;
 width:18vw;
 height:100vh;
-z-index:20;
-cursor:pointer;
+z-index:40;
 }
 
 #leftZone{
 left:0;
+cursor:w-resize;
 }
 
 #rightZone{
 right:0;
+cursor:e-resize;
+}
+
+/* ARROWS */
+
+.arrow{
+position:fixed;
+top:50%;
+transform:translateY(-50%);
+font-size:30px;
+color:#111;
+opacity:0;
+transition:opacity .2s ease;
+z-index:50;
+pointer-events:none;
+}
+
+.arrow.left{
+left:18px;
+}
+
+.arrow.right{
+right:18px;
+}
+
+body:hover .arrow{
+opacity:.12;
+}
+
+#leftZone:hover ~ .arrow.left{
+opacity:.75;
+}
+
+#rightZone:hover ~ .arrow.right{
+opacity:.75;
 }
 
 </style>
@@ -175,6 +222,9 @@ SELECTED WORKS
 
 <div id="leftZone"></div>
 <div id="rightZone"></div>
+
+<div class="arrow left">◀</div>
+<div class="arrow right">▶</div>
 
 <div id="overlay">
 
@@ -303,13 +353,12 @@ update();
 
 }
 
-/* click zones */
+/* CLICK NAVIGATION */
 
 document.getElementById("rightZone").onclick = next;
-
 document.getElementById("leftZone").onclick = prev;
 
-/* keyboard arrows */
+/* KEYBOARD */
 
 document.addEventListener("keydown",(e)=>{
 
@@ -319,7 +368,39 @@ if(e.key==="ArrowLeft") prev();
 
 });
 
-/* swipe support */
+/* TRACKPAD / SWIPE */
+
+let wheelLock = false;
+
+document.addEventListener("wheel",(e)=>{
+
+if(Math.abs(e.deltaX) > 20){
+
+if(wheelLock) return;
+
+wheelLock = true;
+
+if(e.deltaX > 0){
+
+next();
+
+}else{
+
+prev();
+
+}
+
+setTimeout(()=>{
+
+wheelLock = false;
+
+},450);
+
+}
+
+},{passive:true});
+
+/* TOUCH */
 
 let startX = 0;
 
@@ -347,7 +428,7 @@ prev();
 
 });
 
-/* close overlay */
+/* CLOSE OVERLAY */
 
 document.getElementById("overlay").onclick = ()=>{
 
