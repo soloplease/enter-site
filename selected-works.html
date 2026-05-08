@@ -56,6 +56,7 @@ overflow:hidden;
 position:relative;
 display:flex;
 align-items:center;
+justify-content:center;
 }
 
 /* TRACK */
@@ -63,7 +64,7 @@ align-items:center;
 .track{
 display:flex;
 align-items:center;
-gap:8px;
+gap:2px;
 will-change:transform;
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
@@ -72,25 +73,30 @@ transition:transform .45s cubic-bezier(.22,.61,.36,1);
 
 .slide{
 flex:none;
-width:92vw;
+width:100vw;
+
 display:flex;
 flex-direction:column;
 justify-content:center;
+align-items:center;
 }
 
 /* IMAGE */
 
 .imageWrap{
-height:80vh;
+height:88vh;
+
 display:flex;
 align-items:center;
 justify-content:center;
 }
 
 .imageWrap img{
-max-height:80vh;
-max-width:92vw;
+max-height:88vh;
+max-width:98vw;
+
 object-fit:contain;
+
 cursor:zoom-in;
 
 transition:transform .25s ease;
@@ -100,16 +106,17 @@ user-select:none;
 }
 
 .imageWrap img:hover{
-transform:scale(1.005);
+transform:scale(1.003);
 }
 
 /* CAPTION */
 
 .caption{
-margin-top:12px;
+margin-top:10px;
 font-size:13px;
 line-height:1.45;
-padding-left:6px;
+width:98vw;
+max-width:98vw;
 }
 
 /* OVERLAY */
@@ -133,8 +140,8 @@ align-items:flex-start;
 }
 
 #overlayImg{
-max-width:96vw;
-max-height:88vh;
+max-width:97vw;
+max-height:90vh;
 object-fit:contain;
 }
 
@@ -145,13 +152,13 @@ line-height:1.5;
 color:#f2f2ee;
 }
 
-/* NAVIGATION ARROWS */
+/* ARROWS */
 
 .arrow{
 position:fixed;
 top:50%;
 transform:translateY(-50%);
-font-size:24px;
+font-size:22px;
 color:#111;
 opacity:0;
 transition:opacity .2s ease;
@@ -168,7 +175,7 @@ right:18px;
 }
 
 body:hover .arrow{
-opacity:.06;
+opacity:.05;
 }
 
 #leftZone:hover ~ .arrow.left{
@@ -185,7 +192,7 @@ opacity:.55;
 #rightZone{
 position:fixed;
 top:0;
-width:15vw;
+width:14vw;
 height:100vh;
 z-index:50;
 }
@@ -278,7 +285,7 @@ const track = document.getElementById("track");
 
 let current = 1;
 
-/* BUILD INFINITE TRACK */
+/* CREATE SLIDE */
 
 function createSlide(work){
 
@@ -322,7 +329,7 @@ return slide;
 
 }
 
-/* CLONE SYSTEM */
+/* INFINITE SYSTEM */
 
 const extended = [
 works[works.length - 1],
@@ -339,14 +346,18 @@ track.appendChild(createSlide(work));
 function update(animate=true){
 
 if(!animate){
+
 track.style.transition = "none";
+
 }else{
+
 track.style.transition =
 "transform .45s cubic-bezier(.22,.61,.36,1)";
+
 }
 
 track.style.transform =
-`translateX(calc(-${current * 92}vw - ${current * 8}px + 4vw))`;
+`translateX(calc(-${current * 100}vw + 50vw))`;
 
 }
 
@@ -390,7 +401,7 @@ update(false);
 
 });
 
-/* CLICK NAV */
+/* CLICK NAVIGATION */
 
 document.getElementById("rightZone").onclick = next;
 
@@ -406,7 +417,7 @@ if(e.key==="ArrowLeft") prev();
 
 });
 
-/* TRACKPAD SWIPE */
+/* TRACKPAD */
 
 let wheelLock = false;
 
