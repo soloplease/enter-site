@@ -35,15 +35,16 @@ top:14px;
 left:22px;
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:8px;
 z-index:30;
 }
 
 .sidebar a{
 text-decoration:none;
 color:#111;
-font-size:14px;
-font-weight:bold;
+font-size:13px;
+font-style:italic;
+font-weight:normal;
 }
 
 /* VIEWPORT */
@@ -61,7 +62,7 @@ position:relative;
 display:flex;
 height:100vh;
 align-items:center;
-padding-left:240px;
+padding-left:180px;
 transition:transform .45s ease;
 will-change:transform;
 }
@@ -69,47 +70,46 @@ will-change:transform;
 /* SLIDE */
 
 .slide{
-min-width:100vw;
+min-width:96vw;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:flex-start;
-padding-left:40px;
+padding-left:10px;
 box-sizing:border-box;
 }
 
 /* IMAGE */
 
 .imageWrap{
-height:72vh;
+height:80vh;
 display:flex;
 align-items:center;
 }
 
 .imageWrap img{
-max-height:72vh;
-max-width:88vw;
+max-height:80vh;
+max-width:96vw;
 object-fit:contain;
-cursor:grab;
+
+cursor:zoom-in;
+
 transition:transform .25s ease;
+
 user-select:none;
 -webkit-user-drag:none;
 }
 
-.imageWrap img:active{
-cursor:grabbing;
-}
-
 .imageWrap img:hover{
-transform:scale(1.01);
+transform:scale(1.005);
 }
 
 /* CAPTION */
 
 .caption{
-margin-top:14px;
+margin-top:12px;
 font-size:13px;
-line-height:1.5;
+line-height:1.45;
 }
 
 /* OVERLAY */
@@ -117,7 +117,7 @@ line-height:1.5;
 #overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.92);
+background:rgba(0,0,0,.94);
 
 display:none;
 align-items:center;
@@ -133,8 +133,8 @@ align-items:flex-start;
 }
 
 #overlayImg{
-max-width:94vw;
-max-height:84vh;
+max-width:96vw;
+max-height:88vh;
 object-fit:contain;
 }
 
@@ -151,19 +151,17 @@ color:#f2f2ee;
 #rightZone{
 position:fixed;
 top:0;
-width:18vw;
+width:16vw;
 height:100vh;
 z-index:40;
 }
 
 #leftZone{
 left:0;
-cursor:w-resize;
 }
 
 #rightZone{
 right:0;
-cursor:e-resize;
 }
 
 /* ARROWS */
@@ -172,7 +170,7 @@ cursor:e-resize;
 position:fixed;
 top:50%;
 transform:translateY(-50%);
-font-size:30px;
+font-size:26px;
 color:#111;
 opacity:0;
 transition:opacity .2s ease;
@@ -189,15 +187,15 @@ right:18px;
 }
 
 body:hover .arrow{
-opacity:.12;
+opacity:.08;
 }
 
 #leftZone:hover ~ .arrow.left{
-opacity:.75;
+opacity:.65;
 }
 
 #rightZone:hover ~ .arrow.right{
-opacity:.75;
+opacity:.65;
 }
 
 </style>
@@ -333,7 +331,7 @@ update();
 function update(){
 
 track.style.transform =
-`translateX(calc(-${current * 100}vw + 240px))`;
+`translateX(calc(-${current * 96}vw + 180px))`;
 
 }
 
@@ -368,7 +366,7 @@ if(e.key==="ArrowLeft") prev();
 
 });
 
-/* TRACKPAD / SWIPE */
+/* TRACKPAD SWIPE */
 
 let wheelLock = false;
 
@@ -394,7 +392,7 @@ setTimeout(()=>{
 
 wheelLock = false;
 
-},450);
+},420);
 
 }
 
