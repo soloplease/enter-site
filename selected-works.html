@@ -53,53 +53,58 @@ font-weight:normal;
 width:100vw;
 height:100vh;
 overflow:hidden;
-position:relative;
 display:flex;
-align-items:center;
+align-items:flex-start;
 justify-content:center;
+padding-top:58px;
+box-sizing:border-box;
 }
 
 /* TRACK */
 
 .track{
 display:flex;
-align-items:center;
-gap:2px;
+align-items:flex-start;
+gap:0px;
 will-change:transform;
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
-/* SLIDE */
+/* SLIDES */
 
 .slide{
 flex:none;
-width:100vw;
+width:82vw;
 
 display:flex;
 flex-direction:column;
-justify-content:center;
-align-items:center;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding-right:6px;
+box-sizing:border-box;
 }
 
 /* IMAGE */
 
 .imageWrap{
-height:88vh;
-
+height:84vh;
 display:flex;
-align-items:center;
+align-items:flex-start;
 justify-content:center;
 }
 
 .imageWrap img{
-max-height:88vh;
-max-width:98vw;
+height:84vh;
+width:auto;
+
+display:block;
 
 object-fit:contain;
 
 cursor:zoom-in;
 
-transition:transform .25s ease;
+transition:transform .2s ease;
 
 user-select:none;
 -webkit-user-drag:none;
@@ -112,11 +117,11 @@ transform:scale(1.003);
 /* CAPTION */
 
 .caption{
-margin-top:10px;
-font-size:13px;
-line-height:1.45;
-width:98vw;
-max-width:98vw;
+margin-top:8px;
+font-size:11px;
+line-height:1.35;
+padding-left:4px;
+max-width:90%;
 }
 
 /* OVERLAY */
@@ -147,46 +152,12 @@ object-fit:contain;
 
 #overlayCaption{
 margin-top:14px;
-font-size:13px;
-line-height:1.5;
+font-size:12px;
+line-height:1.45;
 color:#f2f2ee;
 }
 
-/* ARROWS */
-
-.arrow{
-position:fixed;
-top:50%;
-transform:translateY(-50%);
-font-size:22px;
-color:#111;
-opacity:0;
-transition:opacity .2s ease;
-z-index:60;
-pointer-events:none;
-}
-
-.arrow.left{
-left:18px;
-}
-
-.arrow.right{
-right:18px;
-}
-
-body:hover .arrow{
-opacity:.05;
-}
-
-#leftZone:hover ~ .arrow.left{
-opacity:.55;
-}
-
-#rightZone:hover ~ .arrow.right{
-opacity:.55;
-}
-
-/* NAV ZONES */
+/* NAVIGATION */
 
 #leftZone,
 #rightZone{
@@ -203,6 +174,40 @@ left:0;
 
 #rightZone{
 right:0;
+}
+
+/* ARROWS */
+
+.arrow{
+position:fixed;
+top:50%;
+transform:translateY(-50%);
+font-size:20px;
+color:#111;
+opacity:0;
+transition:opacity .2s ease;
+z-index:60;
+pointer-events:none;
+}
+
+.arrow.left{
+left:18px;
+}
+
+.arrow.right{
+right:18px;
+}
+
+body:hover .arrow{
+opacity:.04;
+}
+
+#leftZone:hover ~ .arrow.left{
+opacity:.45;
+}
+
+#rightZone:hover ~ .arrow.right{
+opacity:.45;
 }
 
 </style>
@@ -300,7 +305,7 @@ slide.innerHTML = `
 </div>
 
 <div class="caption">
-<div>${work.title}</div>
+<div><i>${work.title}</i></div>
 <div>${work.material}</div>
 <div>${work.size}</div>
 <div>${work.year}</div>
@@ -317,7 +322,7 @@ document.getElementById("overlay").style.display = "flex";
 document.getElementById("overlayImg").src = work.img;
 
 document.getElementById("overlayCaption").innerHTML = `
-<div>${work.title}</div>
+<div><i>${work.title}</i></div>
 <div>${work.material}</div>
 <div>${work.size}</div>
 <div>${work.year}</div>
@@ -329,7 +334,7 @@ return slide;
 
 }
 
-/* INFINITE SYSTEM */
+/* INFINITE CAROUSEL */
 
 const extended = [
 works[works.length - 1],
@@ -357,7 +362,7 @@ track.style.transition =
 }
 
 track.style.transform =
-`translateX(calc(-${current * 100}vw + 50vw))`;
+`translateX(calc(-${current * 82}vw + 9vw))`;
 
 }
 
@@ -401,7 +406,7 @@ update(false);
 
 });
 
-/* CLICK NAVIGATION */
+/* CLICK NAV */
 
 document.getElementById("rightZone").onclick = next;
 
@@ -417,13 +422,13 @@ if(e.key==="ArrowLeft") prev();
 
 });
 
-/* TRACKPAD */
+/* TRACKPAD SWIPE */
 
 let wheelLock = false;
 
 document.addEventListener("wheel",(e)=>{
 
-if(Math.abs(e.deltaX) > 18){
+if(Math.abs(e.deltaX) > 16){
 
 if(wheelLock) return;
 
@@ -443,7 +448,7 @@ setTimeout(()=>{
 
 wheelLock = false;
 
-},420);
+},400);
 
 }
 
