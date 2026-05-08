@@ -1,7 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>Selected Works</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:#f2f2ee;
+font-family:Arial,sans-serif;
+color:#111;
+}
+
+/* title */
+
+.title{
+position:fixed;
+top:14px;
+left:50%;
+transform:translateX(-50%);
+font-size:14px;
+font-weight:bold;
+z-index:30;
+}
+
+/* sidebar */
+
+.sidebar{
+position:fixed;
+top:14px;
+left:22px;
+display:flex;
+flex-direction:column;
+gap:10px;
+z-index:30;
+}
+
+.sidebar a{
+text-decoration:none;
+color:#111;
+font-size:14px;
+font-weight:bold;
+}
+
+/* slideshow */
+
+.viewport{
+width:100vw;
+height:100vh;
+overflow:hidden;
+}
+
+.track{
+display:flex;
+height:100vh;
+align-items:center;
+padding-left:240px;
+transition:transform .45s ease;
+}
+
+.slide{
+min-width:100vw;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:flex-start;
+padding-left:40px;
+box-sizing:border-box;
+}
+
+/* image */
+
+.imageWrap{
+height:72vh;
+display:flex;
+align-items:center;
+}
+
+.imageWrap img{
+max-height:72vh;
+max-width:88vw;
+object-fit:contain;
+cursor:pointer;
+transition:transform .25s ease;
+}
+
+.imageWrap img:hover{
+transform:scale(1.01);
+}
+
+/* caption */
+
+.caption{
+margin-top:14px;
+font-size:13px;
+line-height:1.5;
+}
+
+/* overlay zoom */
+
+#overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+
+display:none;
+align-items:center;
+justify-content:center;
+
+z-index:100;
+}
+
+#overlayInner{
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+}
+
+#overlayImg{
+max-width:94vw;
+max-height:84vh;
+object-fit:contain;
+}
+
+#overlayCaption{
+margin-top:14px;
+font-size:13px;
+line-height:1.5;
+color:#f2f2ee;
+}
+
+/* navigation zones */
+
+#leftZone,
+#rightZone{
+position:fixed;
+top:0;
+width:18vw;
+height:100vh;
+z-index:20;
+cursor:pointer;
+}
+
+#leftZone{
+left:0;
+}
+
+#rightZone{
+right:0;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="title">
+SELECTED WORKS
+</div>
+
+<div class="sidebar">
+<a href="artist.html">Artist</a>
+<a href="#">Selected Exhibitions + Residencies</a>
+</div>
+
+<div class="viewport">
+
+<div class="track" id="track"></div>
+
+</div>
+
+<div id="leftZone"></div>
+<div id="rightZone"></div>
+
+<div id="overlay">
+
+<div id="overlayInner">
+
+<img id="overlayImg">
+
+<div id="overlayCaption"></div>
+
+</div>
+
+</div>
+
 <script>
-const track = document.getElementById("track");
 
 const works = [
+
 {
 img:"SR-rows.JPG",
 title:"Untitled (scatter)",
@@ -9,6 +199,7 @@ material:"Steel",
 size:"375 sq. ft",
 year:"2026"
 },
+
 {
 img:"SR-rows-D1.JPG",
 title:"Untitled (coil I)",
@@ -16,6 +207,7 @@ material:"Steel",
 size:"12 in. D x 3.5 in. W",
 year:"2024"
 },
+
 {
 img:"SR-rows-D2.JPG",
 title:"Untitled (coil IX)",
@@ -23,6 +215,7 @@ material:"Steel",
 size:"23ft D x 1.6ft W",
 year:"2026"
 },
+
 {
 img:"SR-rows-D3.JPG",
 title:"Detail — Untitled (coil IX)",
@@ -30,7 +223,10 @@ material:"Steel",
 size:"23ft D x 1.6ft W",
 year:"2026"
 }
+
 ];
+
+const track = document.getElementById("track");
 
 let current = 0;
 
@@ -41,9 +237,11 @@ track.innerHTML = "";
 works.forEach(work=>{
 
 const slide = document.createElement("div");
+
 slide.className = "slide";
 
 slide.innerHTML = `
+
 <div class="imageWrap">
 <img src="${work.img}">
 </div>
@@ -54,6 +252,7 @@ slide.innerHTML = `
 <div>${work.size}</div>
 <div>${work.year}</div>
 </div>
+
 `;
 
 track.appendChild(slide);
@@ -63,6 +262,7 @@ const img = slide.querySelector("img");
 img.addEventListener("click", ()=>{
 
 document.getElementById("overlay").style.display = "flex";
+
 document.getElementById("overlayImg").src = work.img;
 
 document.getElementById("overlayCaption").innerHTML = `
@@ -77,33 +277,87 @@ document.getElementById("overlayCaption").innerHTML = `
 });
 
 update();
+
 }
 
 function update(){
-track.style.transform = `translateX(calc(-${current * 100}vw + 240px))`;
+
+track.style.transform =
+`translateX(calc(-${current * 100}vw + 240px))`;
+
 }
 
 function next(){
+
 current = (current + 1) % works.length;
+
 update();
+
 }
 
 function prev(){
+
 current = (current - 1 + works.length) % works.length;
+
 update();
+
 }
 
+/* click zones */
+
 document.getElementById("rightZone").onclick = next;
+
 document.getElementById("leftZone").onclick = prev;
 
+/* keyboard arrows */
+
 document.addEventListener("keydown",(e)=>{
+
 if(e.key==="ArrowRight") next();
+
 if(e.key==="ArrowLeft") prev();
+
 });
 
+/* swipe support */
+
+let startX = 0;
+
+document.addEventListener("touchstart",(e)=>{
+
+startX = e.touches[0].clientX;
+
+});
+
+document.addEventListener("touchend",(e)=>{
+
+let endX = e.changedTouches[0].clientX;
+
+if(endX < startX - 50){
+
+next();
+
+}
+
+if(endX > startX + 50){
+
+prev();
+
+}
+
+});
+
+/* close overlay */
+
 document.getElementById("overlay").onclick = ()=>{
+
 document.getElementById("overlay").style.display = "none";
+
 };
 
 buildSlides();
+
 </script>
+
+</body>
+</html>
