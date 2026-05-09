@@ -81,7 +81,7 @@ align-items:flex-start;
 gap:30px;
 
 will-change:transform;
-transition:transform .55s cubic-bezier(.22,.61,.36,1);
+transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
 /* SLIDE */
@@ -91,12 +91,9 @@ flex:none;
 display:flex;
 flex-direction:column;
 align-items:flex-start;
-
-will-change:transform;
-transition:transform .55s cubic-bezier(.22,.61,.36,1);
 }
 
-/* IMAGE */
+/* IMAGE WRAP */
 
 .imageWrap{
 height:70vh;
@@ -104,6 +101,8 @@ display:flex;
 align-items:center;
 justify-content:center;
 }
+
+/* IMAGES */
 
 .imageWrap img{
 height:auto;
@@ -122,6 +121,8 @@ user-select:none;
 filter:grayscale(100%);
 transition:filter .35s ease;
 }
+
+/* ONLY CENTER IMAGE IS COLOR */
 
 .slide.active img{
 filter:grayscale(0%);
@@ -154,6 +155,8 @@ z-index:50;
 .nav.left{ left:0; }
 .nav.right{ right:0; }
 
+/* ARROWS */
+
 .arrow{
 font-size:34px;
 color:#b8b8b2;
@@ -162,6 +165,7 @@ opacity:.10;
 transition:.2s ease;
 
 pointer-events:none;
+user-select:none;
 }
 
 .nav:hover .arrow{
@@ -350,14 +354,17 @@ const slides = document.querySelectorAll(".slide");
 
 let current = works.length;
 
-/* UPDATE (REDUCED PARALLAX) */
+/* UPDATE (CLEAN + STABLE) */
 
 function update(animate=true){
 
 track.style.transition =
 animate
-? "transform .55s cubic-bezier(.22,.61,.36,1)"
+? "transform .45s cubic-bezier(.22,.61,.36,1)"
 : "none";
+
+slides.forEach(s => s.classList.remove("active"));
+slides[current].classList.add("active");
 
 let offset = 0;
 
@@ -370,26 +377,8 @@ const activeWidth = slides[current].offsetWidth;
 const center =
 (window.innerWidth / 2) - (activeWidth / 2);
 
-const x = center - offset;
-
-/* horizontal */
-track.style.transform = `translate3d(${x}px,0,0)`;
-
-/* vertical parallax (HALVED) */
-slides.forEach((slide,i)=>{
-
-const distance = Math.abs(i - current);
-const depth = Math.min(distance,4);
-
-/* REDUCED FROM 14 → 7 */
-const y = depth * 7;
-
-const lift = i === current ? -10 : 0;
-
-slide.style.transform = `translate3d(0,${y + lift}px,0)`;
-
-});
-
+track.style.transform =
+`translateX(${center - offset}px)`;
 }
 
 /* LOOP */
