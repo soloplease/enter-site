@@ -22,7 +22,7 @@ position:fixed;
 top:16px;
 left:24px;
 
-font-size:18px; /* reduced by 2 sizes */
+font-size:18px;
 font-weight:bold;
 letter-spacing:.2px;
 
@@ -73,11 +73,9 @@ box-sizing:border-box;
 .track{
 display:flex;
 align-items:flex-start;
-
 gap:30px;
 
 will-change:transform;
-
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
@@ -85,7 +83,6 @@ transition:transform .45s cubic-bezier(.22,.61,.36,1);
 
 .slide{
 flex:none;
-
 display:flex;
 flex-direction:column;
 align-items:flex-start;
@@ -95,7 +92,6 @@ align-items:flex-start;
 
 .imageWrap{
 height:70vh;
-
 display:flex;
 align-items:center;
 justify-content:center;
@@ -104,12 +100,9 @@ justify-content:center;
 .imageWrap img{
 height:70vh;
 width:auto;
-
 display:block;
 object-fit:contain;
-
 cursor:zoom-in;
-
 user-select:none;
 -webkit-user-drag:none;
 
@@ -117,7 +110,7 @@ filter:grayscale(100%);
 transition:filter .35s ease;
 }
 
-/* ACTIVE (CENTER IMAGE COLOUR) */
+/* ACTIVE IMAGE */
 
 .slide.active img{
 filter:grayscale(0%);
@@ -132,7 +125,7 @@ line-height:1.4;
 padding-left:2px;
 }
 
-/* NAVIGATION */
+/* NAV */
 
 .nav{
 position:fixed;
@@ -147,34 +140,28 @@ justify-content:center;
 z-index:50;
 }
 
-.nav.left{
-left:0;
-}
-
-.nav.right{
-right:0;
-}
+.nav.left{ left:0; }
+.nav.right{ right:0; }
 
 /* ARROWS */
 
 .arrow{
 font-size:34px;
-
 color:#b8b8b2;
 
-opacity:.12;
-
-transition:.18s ease;
+opacity:.10;
+transition:.2s ease;
 
 pointer-events:none;
 user-select:none;
 }
 
-/* BRIGHTER ON HOVER */
+/* 🔥 STRONGER HOVER STATE */
 
 .nav:hover .arrow{
 opacity:1;
-transform:scale(1.08);
+transform:scale(1.12);
+text-shadow:0 0 12px rgba(0,0,0,.35);
 }
 
 /* OVERLAY */
@@ -182,7 +169,6 @@ transform:scale(1.08);
 .overlay{
 position:fixed;
 inset:0;
-
 background:rgba(0,0,0,.92);
 
 display:none;
@@ -210,10 +196,8 @@ object-fit:contain;
 
 .overlayCaption{
 margin-top:14px;
-
 font-size:12px;
 line-height:1.45;
-
 color:#f2f2ee;
 }
 
@@ -232,31 +216,25 @@ justify-content:center;
 z-index:130;
 }
 
-.overlayNav.left{
-left:0;
-}
-
-.overlayNav.right{
-right:0;
-}
+.overlayNav.left{ left:0; }
+.overlayNav.right{ right:0; }
 
 .overlayArrow{
 font-size:40px;
-
 color:#f2f2ee;
 
 opacity:.14;
-
 transition:.18s ease;
 
 pointer-events:none;
 }
 
-/* BRIGHTER OVERLAY HOVER */
+/* STRONGER OVERLAY HOVER */
 
 .overlayNav:hover .overlayArrow{
-opacity:.95;
-transform:scale(1.08);
+opacity:1;
+transform:scale(1.12);
+text-shadow:0 0 18px rgba(255,255,255,.35);
 }
 
 /* CLOSE */
@@ -278,9 +256,7 @@ z-index:200;
 
 <body>
 
-<div class="name">
-SOLOMON ROUSSEAU
-</div>
+<div class="name">SOLOMON ROUSSEAU</div>
 
 <div class="links">
 <a href="selected-works.html" class="active">SELECTED WORKS</a>
@@ -314,7 +290,7 @@ SOLOMON ROUSSEAU
 <div class="overlayArrow">▶</div>
 </div>
 
-<div class="close">×</div>
+<div class="close" onclick="closeZoom()">×</div>
 
 <div class="overlayInner">
 
@@ -329,53 +305,20 @@ SOLOMON ROUSSEAU
 <script>
 
 const works = [
-
-{
-img:"SR-rows.JPG",
-title:"UNTITLED (SCATTER)",
-material:"STEEL",
-size:"375 SQ. FT",
-year:"2026"
-},
-
-{
-img:"SR-rows-D1.JPG?v=4",
-title:"DETAIL — UNTITLED (SCATTER)",
-material:"STEEL",
-size:"375 SQ. FT",
-year:"2026"
-},
-
-{
-img:"SR-rows-D2.JPG",
-title:"UNTITLED (COIL I)",
-material:"STEEL",
-size:"12 IN. D x 3.5 IN. W",
-year:"2024"
-},
-
-{
-img:"SR-rows-D3.JPG",
-title:"UNTITLED (COIL IX)",
-material:"STEEL",
-size:"23FT D x 1.6FT W",
-year:"2026"
-}
-
+{ img:"SR-rows.JPG", title:"UNTITLED (SCATTER)", material:"STEEL", size:"375 SQ. FT", year:"2026" },
+{ img:"SR-rows-D1.JPG?v=4", title:"DETAIL — UNTITLED (SCATTER)", material:"STEEL", size:"375 SQ. FT", year:"2026" },
+{ img:"SR-rows-D2.JPG", title:"UNTITLED (COIL I)", material:"STEEL", size:"12 IN. D x 3.5 IN. W", year:"2024" },
+{ img:"SR-rows-D3.JPG", title:"UNTITLED (COIL IX)", material:"STEEL", size:"23FT D x 1.6FT W", year:"2026" }
 ];
 
 const track = document.getElementById("track");
 
-/* BUILD */
-
 function makeSlide(work,index){
 
 const slide = document.createElement("div");
-
 slide.className = "slide";
 
 slide.innerHTML = `
-
 <div class="imageWrap">
 <img src="${work.img}">
 </div>
@@ -386,27 +329,19 @@ slide.innerHTML = `
 <div>${work.size}</div>
 <div>${work.year}</div>
 </div>
-
 `;
 
-slide.querySelector("img").onclick = ()=>{
-
-openZoom(index);
-
-};
+slide.querySelector("img").onclick = ()=> openZoom(index);
 
 return slide;
-
 }
 
-/* LOOP */
+/* BUILD */
 
 const fullSet = [...works,...works,...works];
 
 fullSet.forEach((work,i)=>{
-
 track.appendChild(makeSlide(work,i % works.length));
-
 });
 
 const slides = document.querySelectorAll(".slide");
@@ -422,7 +357,7 @@ animate
 ? "transform .45s cubic-bezier(.22,.61,.36,1)"
 : "none";
 
-/* REMOVE ACTIVE */
+/* active center */
 slides.forEach(s => s.classList.remove("active"));
 slides[current].classList.add("active");
 
@@ -435,15 +370,13 @@ offset += slides[i].offsetWidth + 30;
 const activeWidth = slides[current].offsetWidth;
 
 const center =
-(window.innerWidth / 2) -
-(activeWidth / 2);
+(window.innerWidth / 2) - (activeWidth / 2);
 
 track.style.transform =
 `translateX(${center - offset}px)`;
-
 }
 
-/* NORMALIZE */
+/* LOOP FIX */
 
 function normalize(){
 
@@ -478,25 +411,51 @@ setTimeout(normalize,460);
 window.addEventListener("load", ()=> update(false));
 window.addEventListener("resize", ()=> update(false));
 
-/* WHEEL */
+/* ZOOM FIXED */
 
-let wheelLock = false;
+let overlayIndex = 0;
 
-window.addEventListener("wheel",(e)=>{
+function openZoom(index){
 
-if(Math.abs(e.deltaX) > 18){
+overlayIndex = index;
 
-if(wheelLock) return;
-
-wheelLock = true;
-
-if(e.deltaX > 0) nextSlide();
-else prevSlide();
-
-setTimeout(()=> wheelLock = false, 420);
+document.getElementById("overlay").classList.add("active");
+renderOverlay();
 }
 
-},{passive:true});
+function renderOverlay(){
+
+const work = works[overlayIndex];
+
+document.getElementById("zoomed").src = work.img;
+
+document.getElementById("overlayCaption").innerHTML = `
+<div><i>${work.title}</i></div>
+<div>${work.material}</div>
+<div>${work.size}</div>
+<div>${work.year}</div>
+`;
+}
+
+function overlayNext(e){
+e.stopPropagation();
+overlayIndex = (overlayIndex + 1) % works.length;
+renderOverlay();
+}
+
+function overlayPrev(e){
+e.stopPropagation();
+overlayIndex = (overlayIndex - 1 + works.length) % works.length;
+renderOverlay();
+}
+
+function closeZoom(){
+document.getElementById("overlay").classList.remove("active");
+}
+
+document.getElementById("overlay").addEventListener("click",(e)=>{
+if(e.target.id === "overlay") closeZoom();
+});
 
 </script>
 
