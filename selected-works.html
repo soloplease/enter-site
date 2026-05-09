@@ -12,6 +12,7 @@ background:#f8f8f4;
 overflow:hidden;
 font-family:Arial,sans-serif;
 color:#111;
+text-transform:uppercase;
 }
 
 /* ARTIST NAME */
@@ -32,12 +33,14 @@ z-index:40;
 
 .title{
 position:fixed;
-top:22px;
+top:24px;
 left:50%;
 transform:translateX(-50%);
 
-font-size:18px;
+font-size:14px;
 font-weight:bold;
+
+text-decoration:underline;
 
 z-index:40;
 }
@@ -72,6 +75,9 @@ overflow:hidden;
 
 display:flex;
 align-items:center;
+
+padding-top:40px;
+box-sizing:border-box;
 }
 
 /* TRACK */
@@ -129,7 +135,7 @@ line-height:1.4;
 padding-left:2px;
 }
 
-/* NAVIGATION ZONES */
+/* NAVIGATION */
 
 .nav{
 position:fixed;
@@ -156,7 +162,6 @@ right:0;
 
 .arrow{
 font-size:34px;
-font-weight:normal;
 
 color:#b8b8b2;
 
@@ -253,6 +258,8 @@ opacity:.82;
 transform:scale(1.08);
 }
 
+/* CLOSE */
+
 .close{
 position:absolute;
 top:20px;
@@ -262,6 +269,7 @@ font-size:32px;
 color:#f2f2ee;
 
 cursor:pointer;
+z-index:200;
 }
 
 </style>
@@ -270,7 +278,7 @@ cursor:pointer;
 <body>
 
 <div class="name">
-Solomon Rousseau
+SOLOMON ROUSSEAU
 </div>
 
 <div class="title">
@@ -278,8 +286,8 @@ SELECTED WORKS
 </div>
 
 <div class="links">
-<a href="artist.html">Artist</a>
-<a href="exhibitions.html">Selected Exhibitions + Residencies</a>
+<a href="artist.html">ARTIST</a>
+<a href="exhibitions.html">SELECTED EXHIBITIONS + RESIDENCIES</a>
 </div>
 
 <div class="viewer">
@@ -308,7 +316,7 @@ SELECTED WORKS
 <div class="overlayArrow">▶</div>
 </div>
 
-<div class="close" onclick="closeZoom()">×</div>
+<div class="close">×</div>
 
 <div class="overlayInner">
 
@@ -326,33 +334,33 @@ const works = [
 
 {
 img:"SR-rows.JPG",
-title:"Untitled (scatter)",
-material:"Steel",
-size:"375 sq. ft",
+title:"UNTITLED (SCATTER)",
+material:"STEEL",
+size:"375 SQ. FT",
 year:"2026"
 },
 
 {
 img:"SR-rows-D1.JPG?v=4",
-title:"Detail — Untitled (scatter)",
-material:"Steel",
-size:"375 sq. ft",
+title:"DETAIL — UNTITLED (SCATTER)",
+material:"STEEL",
+size:"375 SQ. FT",
 year:"2026"
 },
 
 {
 img:"SR-rows-D2.JPG",
-title:"Untitled (coil I)",
-material:"Steel",
-size:"12 in. D x 3.5 in. W",
+title:"UNTITLED (COIL I)",
+material:"STEEL",
+size:"12 IN. D x 3.5 IN. W",
 year:"2024"
 },
 
 {
 img:"SR-rows-D3.JPG",
-title:"Untitled (coil IX)",
-material:"Steel",
-size:"23ft D x 1.6ft W",
+title:"UNTITLED (COIL IX)",
+material:"STEEL",
+size:"23FT D x 1.6FT W",
 year:"2026"
 }
 
@@ -622,7 +630,18 @@ document.getElementById("overlay").classList.remove("active");
 
 }
 
-document.getElementById("overlay").onclick = closeZoom;
+/* CLOSE FIX */
+
+document.getElementById("overlay").addEventListener("click",(e)=>{
+
+if(
+e.target.id === "overlay" ||
+e.target.className === "close"
+){
+closeZoom();
+}
+
+});
 
 </script>
 
