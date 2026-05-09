@@ -15,7 +15,7 @@ color:#111;
 text-transform:uppercase;
 }
 
-/* ARTIST NAME */
+/* NAME */
 
 .name{
 position:fixed;
@@ -46,18 +46,13 @@ z-index:40;
 text-decoration:none;
 color:#111;
 font-size:11px;
-font-style:normal;
 transition:all .2s ease;
 }
-
-/* HOVER STATE */
 
 .links a:hover{
 font-weight:bold;
 font-size:12px;
 }
-
-/* ACTIVE PAGE */
 
 .links a.active{
 font-style:italic;
@@ -86,10 +81,10 @@ align-items:flex-start;
 gap:30px;
 
 will-change:transform;
-transition:transform .45s cubic-bezier(.22,.61,.36,1);
+transition:transform .55s cubic-bezier(.22,.61,.36,1);
 }
 
-/* SLIDES */
+/* SLIDE */
 
 .slide{
 flex:none;
@@ -98,7 +93,7 @@ flex-direction:column;
 align-items:flex-start;
 
 will-change:transform;
-transition:transform .45s cubic-bezier(.22,.61,.36,1);
+transition:transform .55s cubic-bezier(.22,.61,.36,1);
 }
 
 /* IMAGE */
@@ -127,8 +122,6 @@ user-select:none;
 filter:grayscale(100%);
 transition:filter .35s ease;
 }
-
-/* ACTIVE IMAGE */
 
 .slide.active img{
 filter:grayscale(0%);
@@ -161,8 +154,6 @@ z-index:50;
 .nav.left{ left:0; }
 .nav.right{ right:0; }
 
-/* ARROWS */
-
 .arrow{
 font-size:34px;
 color:#b8b8b2;
@@ -171,15 +162,11 @@ opacity:.10;
 transition:.2s ease;
 
 pointer-events:none;
-user-select:none;
 }
-
-/* STRONG HOVER */
 
 .nav:hover .arrow{
 opacity:1;
 transform:scale(1.12);
-text-shadow:0 0 12px rgba(0,0,0,.35);
 }
 
 /* OVERLAY */
@@ -247,12 +234,9 @@ transition:.18s ease;
 pointer-events:none;
 }
 
-/* OVERLAY HOVER */
-
 .overlayNav:hover .overlayArrow{
 opacity:1;
 transform:scale(1.12);
-text-shadow:0 0 18px rgba(255,255,255,.35);
 }
 
 /* CLOSE */
@@ -366,18 +350,14 @@ const slides = document.querySelectorAll(".slide");
 
 let current = works.length;
 
-/* UPDATE WITH PARALLAX */
+/* UPDATE (REDUCED PARALLAX) */
 
 function update(animate=true){
 
 track.style.transition =
 animate
-? "transform .45s cubic-bezier(.22,.61,.36,1)"
+? "transform .55s cubic-bezier(.22,.61,.36,1)"
 : "none";
-
-/* active */
-slides.forEach(s => s.classList.remove("active"));
-slides[current].classList.add("active");
 
 let offset = 0;
 
@@ -390,20 +370,23 @@ const activeWidth = slides[current].offsetWidth;
 const center =
 (window.innerWidth / 2) - (activeWidth / 2);
 
-track.style.transform =
-`translateX(${center - offset}px)`;
+const x = center - offset;
 
-/* VERTICAL PARALLAX */
+/* horizontal */
+track.style.transform = `translate3d(${x}px,0,0)`;
 
+/* vertical parallax (HALVED) */
 slides.forEach((slide,i)=>{
 
 const distance = Math.abs(i - current);
 const depth = Math.min(distance,4);
 
-const y = depth * 18;
+/* REDUCED FROM 14 → 7 */
+const y = depth * 7;
+
 const lift = i === current ? -10 : 0;
 
-slide.style.transform = `translateY(${y + lift}px)`;
+slide.style.transform = `translate3d(0,${y + lift}px,0)`;
 
 });
 
@@ -422,7 +405,6 @@ if(current < works.length){
 current += works.length;
 update(false);
 }
-
 }
 
 /* NAV */
