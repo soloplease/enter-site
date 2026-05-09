@@ -5,156 +5,193 @@
 <title>Selected Works</title>
 
 <style>
+
 body{
-  margin:0;
-  background:#f2f2ee;
-  overflow:hidden;
-  font-family:Arial,sans-serif;
-  color:#111;
+margin:0;
+background:#f2f2ee;
+overflow:hidden;
+font-family:Arial,sans-serif;
+color:#111;
 }
 
 /* TITLE */
 
 .title{
-  position:fixed;
-  top:18px;
-  width:100%;
-  text-align:center;
-  font-size:18px;
-  font-weight:bold;
-  letter-spacing:.5px;
-  z-index:20;
+position:fixed;
+top:18px;
+width:100%;
+text-align:center;
+font-size:18px;
+font-weight:bold;
+letter-spacing:.5px;
+z-index:30;
 }
 
 /* LINKS */
 
 .links{
-  position:fixed;
-  top:20px;
-  left:24px;
-  display:flex;
-  gap:24px;
-  z-index:20;
+position:fixed;
+top:20px;
+left:24px;
+
+display:flex;
+gap:24px;
+
+z-index:30;
 }
 
 .links a{
-  text-decoration:none;
-  color:#111;
-  font-size:13px;
-  font-style:italic;
+text-decoration:none;
+color:#111;
+font-size:13px;
+font-style:italic;
 }
 
-.links a:hover{
-  opacity:.5;
-}
-
-/* SLIDESHOW */
+/* VIEWER */
 
 .viewer{
-  position:relative;
-  width:100vw;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  overflow:hidden;
+position:relative;
+width:100vw;
+height:100vh;
+overflow:hidden;
+
+display:flex;
+align-items:center;
 }
+
+/* TRACK */
 
 .track{
-  display:flex;
-  align-items:flex-start;
-  gap:14px;
-  padding-left:24vw;
-  transition:transform .45s ease;
-  will-change:transform;
+display:flex;
+align-items:flex-start;
+gap:6px;
+
+will-change:transform;
+
+transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
+
+/* SLIDE */
 
 .slide{
-  flex:none;
-  width:42vw;
-  position:relative;
+flex:none;
+
+display:flex;
+flex-direction:column;
+align-items:flex-start;
 }
 
-.slide img{
-  width:100%;
-  height:72vh;
-  object-fit:cover;
-  display:block;
-  cursor:zoom-in;
+/* IMAGE */
+
+.imageWrap{
+height:70vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-/* TEXT */
+.imageWrap img{
+height:70vh;
+width:auto;
+
+display:block;
+object-fit:contain;
+
+cursor:zoom-in;
+
+user-select:none;
+-webkit-user-drag:none;
+}
+
+/* CAPTION */
 
 .caption{
-  margin-top:8px;
-  font-size:12px;
-  line-height:1.35;
+margin-top:8px;
+font-size:11px;
+line-height:1.35;
+padding-left:2px;
 }
 
-.caption i{
-  font-style:italic;
-}
-
-/* NAVIGATION */
+/* NAV */
 
 .nav{
-  position:fixed;
-  top:0;
-  width:15vw;
-  height:100vh;
-  z-index:15;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+position:fixed;
+top:0;
+width:15vw;
+height:100vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+z-index:40;
 }
 
 .nav.left{
-  left:0;
+left:0;
 }
 
 .nav.right{
-  right:0;
+right:0;
 }
 
 .arrow{
-  font-size:24px;
-  opacity:0;
-  transition:.2s;
-  user-select:none;
+font-size:20px;
+opacity:0;
+transition:.2s;
+pointer-events:none;
 }
 
 .nav:hover .arrow{
-  opacity:.25;
+opacity:.35;
 }
 
-/* ZOOM */
+/* OVERLAY */
 
 .overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.88);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:100;
+position:fixed;
+inset:0;
+
+background:rgba(0,0,0,.9);
+
+display:none;
+align-items:center;
+justify-content:center;
+
+z-index:100;
 }
 
 .overlay.active{
-  display:flex;
+display:flex;
+}
+
+.overlayInner{
+display:flex;
+flex-direction:column;
+align-items:flex-start;
 }
 
 .overlay img{
-  max-width:92vw;
-  max-height:84vh;
-  object-fit:contain;
+max-width:94vw;
+max-height:86vh;
+object-fit:contain;
+}
+
+.overlayCaption{
+margin-top:12px;
+font-size:12px;
+line-height:1.45;
+color:#f2f2ee;
 }
 
 .close{
-  position:absolute;
-  top:20px;
-  right:24px;
-  color:white;
-  font-size:28px;
-  cursor:pointer;
+position:absolute;
+top:20px;
+right:24px;
+font-size:28px;
+color:white;
+cursor:pointer;
 }
 
 </style>
@@ -162,197 +199,312 @@ body{
 
 <body>
 
-<div class="title">SELECTED WORKS</div>
+<div class="title">
+SELECTED WORKS
+</div>
 
 <div class="links">
-  <a href="artist.html">Artist</a>
-  <a href="exhibitions.html">Selected Exhibitions + Residencies</a>
+<a href="artist.html">Artist</a>
+<a href="exhibitions.html">Selected Exhibitions + Residencies</a>
 </div>
 
 <div class="viewer">
 
-  <div class="nav left" onclick="prevSlide()">
-    <div class="arrow">◀</div>
-  </div>
+<div class="nav left" onclick="prevSlide()">
+<div class="arrow">◀</div>
+</div>
 
-  <div class="nav right" onclick="nextSlide()">
-    <div class="arrow">▶</div>
-  </div>
+<div class="nav right" onclick="nextSlide()">
+<div class="arrow">▶</div>
+</div>
 
-  <div class="track" id="track">
-
-    <!-- IMAGE 1 -->
-
-    <div class="slide">
-      <img src="SR-rows.JPG" onclick="openZoom(this.src)">
-
-      <div class="caption">
-        <i>Untitled (scatter)</i><br>
-        Steel<br>
-        375 sq. ft<br>
-        2026
-      </div>
-    </div>
-
-    <!-- IMAGE 2 -->
-
-    <div class="slide">
-      <img src="./SR-rows-D1.JPG?v=2" onclick="openZoom(this.src)">
-
-      <div class="caption">
-        <i>Detail — Untitled (scatter)</i><br>
-        Steel<br>
-        375 sq. ft<br>
-        2026
-      </div>
-    </div>
-
-    <!-- IMAGE 3 -->
-
-    <div class="slide">
-      <img src="SR-rows-D2.JPG" onclick="openZoom(this.src)">
-
-      <div class="caption">
-        <i>Untitled (coil I)</i><br>
-        Steel<br>
-        12 in. D x 3.5 in. W<br>
-        2024
-      </div>
-    </div>
-
-    <!-- IMAGE 4 -->
-
-    <div class="slide">
-      <img src="SR-rows-D3.JPG" onclick="openZoom(this.src)">
-
-      <div class="caption">
-        <i>Untitled (coil IX)</i><br>
-        Steel<br>
-        23ft D x 1.6ft W<br>
-        2026
-      </div>
-    </div>
-
-  </div>
+<div class="track" id="track"></div>
 
 </div>
 
-<!-- ZOOM -->
+<!-- OVERLAY -->
 
 <div class="overlay" id="overlay" onclick="closeZoom()">
-  <div class="close">×</div>
-  <img id="zoomed">
+
+<div class="close">×</div>
+
+<div class="overlayInner">
+
+<img id="zoomed">
+
+<div class="overlayCaption" id="overlayCaption"></div>
+
+</div>
+
 </div>
 
 <script>
 
+const works = [
+
+{
+img:"SR-rows.JPG",
+title:"Untitled (scatter)",
+material:"Steel",
+size:"375 sq. ft",
+year:"2026"
+},
+
+{
+img:"SR-rows-D1.JPG?v=3",
+title:"Detail — Untitled (scatter)",
+material:"Steel",
+size:"375 sq. ft",
+year:"2026"
+},
+
+{
+img:"SR-rows-D2.JPG",
+title:"Untitled (coil I)",
+material:"Steel",
+size:"12 in. D x 3.5 in. W",
+year:"2024"
+},
+
+{
+img:"SR-rows-D3.JPG",
+title:"Untitled (coil IX)",
+material:"Steel",
+size:"23ft D x 1.6ft W",
+year:"2026"
+}
+
+];
+
 const track = document.getElementById("track");
+
+/* BUILD */
+
+function makeSlide(work){
+
+const slide = document.createElement("div");
+
+slide.className = "slide";
+
+slide.innerHTML = `
+
+<div class="imageWrap">
+<img src="${work.img}">
+</div>
+
+<div class="caption">
+<div><i>${work.title}</i></div>
+<div>${work.material}</div>
+<div>${work.size}</div>
+<div>${work.year}</div>
+</div>
+
+`;
+
+slide.querySelector("img").onclick = ()=>{
+
+openZoom(work);
+
+};
+
+return slide;
+
+}
+
+/* TRIPLE SET FOR TRUE INFINITE LOOP */
+
+const fullSet = [
+...works,
+...works,
+...works
+];
+
+fullSet.forEach(work=>{
+
+track.appendChild(makeSlide(work));
+
+});
 
 const slides = document.querySelectorAll(".slide");
 
-let index = 0;
+let current = works.length;
 
-function updateSlide(){
+/* POSITION */
 
-  const slideWidth =
-    slides[0].offsetWidth + 14;
+function update(animate=true){
 
-  track.style.transform =
-    `translateX(calc(24vw - ${index * slideWidth}px))`;
+track.style.transition =
+animate
+? "transform .45s cubic-bezier(.22,.61,.36,1)"
+: "none";
+
+let offset = 0;
+
+for(let i=0;i<current;i++){
+
+offset += slides[i].offsetWidth + 6;
+
 }
 
-/* infinite carousel */
+const activeWidth = slides[current].offsetWidth;
+
+const center =
+(window.innerWidth / 2) -
+(activeWidth / 2);
+
+track.style.transform =
+`translateX(${center - offset}px)`;
+
+}
+
+/* RESET LOOP */
+
+function normalize(){
+
+if(current >= works.length * 2){
+
+current -= works.length;
+update(false);
+
+}
+
+if(current < works.length){
+
+current += works.length;
+update(false);
+
+}
+
+}
+
+/* NAVIGATION */
 
 function nextSlide(){
 
-  index++;
+current++;
 
-  if(index >= slides.length){
+update();
 
-    track.appendChild(slides[0]);
+setTimeout(normalize,460);
 
-    index--;
-
-  }
-
-  updateSlide();
 }
 
 function prevSlide(){
 
-  if(index <= 0){
+current--;
 
-    track.prepend(track.lastElementChild);
+update();
 
-  } else {
+setTimeout(normalize,460);
 
-    index--;
-
-  }
-
-  updateSlide();
 }
 
-/* trackpad swipe */
+/* START */
 
-let startX = 0;
+window.addEventListener("load", ()=>{
+
+update(false);
+
+});
+
+window.addEventListener("resize", ()=>{
+
+update(false);
+
+});
+
+/* TRACKPAD */
+
+let wheelLock = false;
 
 window.addEventListener("wheel",(e)=>{
 
-  if(Math.abs(e.deltaX) > Math.abs(e.deltaY)){
+if(Math.abs(e.deltaX) > 18){
 
-    if(e.deltaX > 0){
+if(wheelLock) return;
 
-      nextSlide();
+wheelLock = true;
 
-    } else {
+if(e.deltaX > 0){
 
-      prevSlide();
+nextSlide();
 
-    }
-  }
-});
+}else{
 
-/* touch */
+prevSlide();
+
+}
+
+setTimeout(()=>{
+
+wheelLock = false;
+
+},420);
+
+}
+
+},{passive:true});
+
+/* TOUCH */
+
+let startX = 0;
 
 window.addEventListener("touchstart",(e)=>{
 
-  startX = e.touches[0].clientX;
+startX = e.touches[0].clientX;
 
 });
 
 window.addEventListener("touchend",(e)=>{
 
-  let endX = e.changedTouches[0].clientX;
+let endX = e.changedTouches[0].clientX;
 
-  if(startX - endX > 40){
+if(startX - endX > 50){
 
-    nextSlide();
+nextSlide();
 
-  }
+}
 
-  if(endX - startX > 40){
+if(endX - startX > 50){
 
-    prevSlide();
+prevSlide();
 
-  }
+}
+
 });
 
-/* zoom */
+/* KEYS */
 
-function openZoom(src){
+window.addEventListener("keydown",(e)=>{
 
-  document.getElementById("overlay").classList.add("active");
+if(e.key==="ArrowRight") nextSlide();
 
-  document.getElementById("zoomed").src = src;
+if(e.key==="ArrowLeft") prevSlide();
+
+});
+
+/* ZOOM */
+
+function openZoom(work){
+
+document.getElementById("overlay").classList.add("active");
+
+document.getElementById("zoomed").src = work.img;
+
+document.getElementById("overlayCaption").innerHTML = `
+<div><i>${work.title}</i></div>
+<div>${work.material}</div>
+<div>${work.size}</div>
+<div>${work.year}</div>
+`;
+
 }
 
 function closeZoom(){
 
-  document.getElementById("overlay").classList.remove("active");
-}
+document.getElementById("overlay").classList.remove("active");
 
-updateSlide();
+}
 
 </script>
 
