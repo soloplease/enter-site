@@ -22,7 +22,7 @@ position:fixed;
 top:16px;
 left:24px;
 
-font-size:22px;
+font-size:18px; /* reduced by 2 sizes */
 font-weight:bold;
 letter-spacing:.2px;
 
@@ -112,6 +112,15 @@ cursor:zoom-in;
 
 user-select:none;
 -webkit-user-drag:none;
+
+filter:grayscale(100%);
+transition:filter .35s ease;
+}
+
+/* ACTIVE (CENTER IMAGE COLOUR) */
+
+.slide.active img{
+filter:grayscale(0%);
 }
 
 /* CAPTION */
@@ -161,8 +170,10 @@ pointer-events:none;
 user-select:none;
 }
 
+/* BRIGHTER ON HOVER */
+
 .nav:hover .arrow{
-opacity:.72;
+opacity:1;
 transform:scale(1.08);
 }
 
@@ -241,8 +252,10 @@ transition:.18s ease;
 pointer-events:none;
 }
 
+/* BRIGHTER OVERLAY HOVER */
+
 .overlayNav:hover .overlayArrow{
-opacity:.82;
+opacity:.95;
 transform:scale(1.08);
 }
 
@@ -386,13 +399,9 @@ return slide;
 
 }
 
-/* TRUE INFINITE LOOP */
+/* LOOP */
 
-const fullSet = [
-...works,
-...works,
-...works
-];
+const fullSet = [...works,...works,...works];
 
 fullSet.forEach((work,i)=>{
 
@@ -404,7 +413,7 @@ const slides = document.querySelectorAll(".slide");
 
 let current = works.length;
 
-/* POSITION */
+/* UPDATE */
 
 function update(animate=true){
 
@@ -413,12 +422,14 @@ animate
 ? "transform .45s cubic-bezier(.22,.61,.36,1)"
 : "none";
 
+/* REMOVE ACTIVE */
+slides.forEach(s => s.classList.remove("active"));
+slides[current].classList.add("active");
+
 let offset = 0;
 
 for(let i=0;i<current;i++){
-
 offset += slides[i].offsetWidth + 30;
-
 }
 
 const activeWidth = slides[current].offsetWidth;
@@ -432,63 +443,42 @@ track.style.transform =
 
 }
 
-/* LOOP NORMALIZE */
+/* NORMALIZE */
 
 function normalize(){
 
 if(current >= works.length * 2){
-
 current -= works.length;
 update(false);
-
 }
 
 if(current < works.length){
-
 current += works.length;
 update(false);
-
 }
 
 }
 
-/* NAVIGATION */
+/* NAV */
 
 function nextSlide(){
-
 current++;
-
 update();
-
 setTimeout(normalize,460);
-
 }
 
 function prevSlide(){
-
 current--;
-
 update();
-
 setTimeout(normalize,460);
-
 }
 
-/* START */
+/* INIT */
 
-window.addEventListener("load", ()=>{
+window.addEventListener("load", ()=> update(false));
+window.addEventListener("resize", ()=> update(false));
 
-update(false);
-
-});
-
-window.addEventListener("resize", ()=>{
-
-update(false);
-
-});
-
-/* TRACKPAD */
+/* WHEEL */
 
 let wheelLock = false;
 
@@ -500,133 +490,13 @@ if(wheelLock) return;
 
 wheelLock = true;
 
-if(e.deltaX > 0){
+if(e.deltaX > 0) nextSlide();
+else prevSlide();
 
-nextSlide();
-
-}else{
-
-prevSlide();
-
-}
-
-setTimeout(()=>{
-
-wheelLock = false;
-
-},420);
-
+setTimeout(()=> wheelLock = false, 420);
 }
 
 },{passive:true});
-
-/* TOUCH */
-
-let startX = 0;
-
-window.addEventListener("touchstart",(e)=>{
-
-startX = e.touches[0].clientX;
-
-});
-
-window.addEventListener("touchend",(e)=>{
-
-let endX = e.changedTouches[0].clientX;
-
-if(startX - endX > 50){
-
-nextSlide();
-
-}
-
-if(endX - startX > 50){
-
-prevSlide();
-
-}
-
-});
-
-/* OVERLAY */
-
-let overlayIndex = 0;
-
-function openZoom(index){
-
-overlayIndex = index;
-
-renderOverlay();
-
-document.getElementById("overlay").classList.add("active");
-
-}
-
-function renderOverlay(){
-
-const work = works[overlayIndex];
-
-document.getElementById("zoomed").src = work.img;
-
-document.getElementById("overlayCaption").innerHTML = `
-<div><i>${work.title}</i></div>
-<div>${work.material}</div>
-<div>${work.size}</div>
-<div>${work.year}</div>
-`;
-
-}
-
-function overlayNext(e){
-
-e.stopPropagation();
-
-overlayIndex++;
-
-if(overlayIndex >= works.length){
-
-overlayIndex = 0;
-
-}
-
-renderOverlay();
-
-}
-
-function overlayPrev(e){
-
-e.stopPropagation();
-
-overlayIndex--;
-
-if(overlayIndex < 0){
-
-overlayIndex = works.length - 1;
-
-}
-
-renderOverlay();
-
-}
-
-function closeZoom(){
-
-document.getElementById("overlay").classList.remove("active");
-
-}
-
-/* CLOSE FIX */
-
-document.getElementById("overlay").addEventListener("click",(e)=>{
-
-if(
-e.target.id === "overlay" ||
-e.target.className === "close"
-){
-closeZoom();
-}
-
-});
 
 </script>
 
