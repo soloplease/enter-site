@@ -45,15 +45,12 @@ z-index:40;
 .links a{
 text-decoration:none;
 color:#111;
-
-/* MATCH CAPTION SIZE */
 font-size:11px;
-
 font-style:normal;
 transition:all .2s ease;
 }
 
-/* HOVER STATE: BOLD + SIZE UP */
+/* HOVER STATE */
 
 .links a:hover{
 font-weight:bold;
@@ -92,26 +89,26 @@ will-change:transform;
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
-/* SLIDE */
+/* SLIDES */
 
 .slide{
 flex:none;
 display:flex;
 flex-direction:column;
 align-items:flex-start;
+
+will-change:transform;
+transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
-/* IMAGE WRAP */
+/* IMAGE */
 
 .imageWrap{
 height:70vh;
-
 display:flex;
 align-items:center;
 justify-content:center;
 }
-
-/* KEY FIX: NO CROPPING */
 
 .imageWrap img{
 height:auto;
@@ -177,7 +174,7 @@ pointer-events:none;
 user-select:none;
 }
 
-/* HOVER BRIGHTNESS */
+/* STRONG HOVER */
 
 .nav:hover .arrow{
 opacity:1;
@@ -369,7 +366,7 @@ const slides = document.querySelectorAll(".slide");
 
 let current = works.length;
 
-/* UPDATE */
+/* UPDATE WITH PARALLAX */
 
 function update(animate=true){
 
@@ -378,6 +375,7 @@ animate
 ? "transform .45s cubic-bezier(.22,.61,.36,1)"
 : "none";
 
+/* active */
 slides.forEach(s => s.classList.remove("active"));
 slides[current].classList.add("active");
 
@@ -394,6 +392,21 @@ const center =
 
 track.style.transform =
 `translateX(${center - offset}px)`;
+
+/* VERTICAL PARALLAX */
+
+slides.forEach((slide,i)=>{
+
+const distance = Math.abs(i - current);
+const depth = Math.min(distance,4);
+
+const y = depth * 18;
+const lift = i === current ? -10 : 0;
+
+slide.style.transform = `translateY(${y + lift}px)`;
+
+});
+
 }
 
 /* LOOP */
@@ -409,6 +422,7 @@ if(current < works.length){
 current += works.length;
 update(false);
 }
+
 }
 
 /* NAV */
