@@ -10,8 +10,10 @@ body{
 margin:0;
 background:#f8f8f4;
 overflow:hidden;
+
 font-family:Arial,sans-serif;
 color:#111;
+
 text-transform:uppercase;
 }
 
@@ -24,6 +26,7 @@ left:24px;
 
 font-size:18px;
 font-weight:bold;
+
 letter-spacing:.2px;
 
 z-index:40;
@@ -46,7 +49,8 @@ z-index:40;
 text-decoration:none;
 color:#111;
 font-size:11px;
-transition:all .2s ease;
+
+transition:.2s ease;
 }
 
 .links a:hover{
@@ -78,9 +82,11 @@ box-sizing:border-box;
 .track{
 display:flex;
 align-items:flex-start;
+
 gap:30px;
 
 will-change:transform;
+
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
@@ -88,21 +94,21 @@ transition:transform .45s cubic-bezier(.22,.61,.36,1);
 
 .slide{
 flex:none;
+
 display:flex;
 flex-direction:column;
 align-items:flex-start;
 }
 
-/* IMAGE WRAP */
+/* IMAGE */
 
 .imageWrap{
 height:70vh;
+
 display:flex;
 align-items:center;
 justify-content:center;
 }
-
-/* IMAGES */
 
 .imageWrap img{
 height:auto;
@@ -122,7 +128,7 @@ filter:grayscale(100%);
 transition:filter .35s ease;
 }
 
-/* ONLY CENTER IMAGE IS COLOR */
+/* ACTIVE IMAGE */
 
 .slide.active img{
 filter:grayscale(0%);
@@ -155,8 +161,6 @@ z-index:50;
 .nav.left{ left:0; }
 .nav.right{ right:0; }
 
-/* ARROWS */
-
 .arrow{
 font-size:34px;
 color:#b8b8b2;
@@ -165,7 +169,6 @@ opacity:.10;
 transition:.2s ease;
 
 pointer-events:none;
-user-select:none;
 }
 
 .nav:hover .arrow{
@@ -178,6 +181,7 @@ transform:scale(1.12);
 .overlay{
 position:fixed;
 inset:0;
+
 background:rgba(0,0,0,.92);
 
 display:none;
@@ -205,8 +209,10 @@ object-fit:contain;
 
 .overlayCaption{
 margin-top:14px;
+
 font-size:12px;
 line-height:1.45;
+
 color:#f2f2ee;
 }
 
@@ -230,9 +236,11 @@ z-index:130;
 
 .overlayArrow{
 font-size:40px;
+
 color:#f2f2ee;
 
 opacity:.14;
+
 transition:.18s ease;
 
 pointer-events:none;
@@ -264,10 +272,18 @@ z-index:200;
 
 <div class="name">SOLOMON ROUSSEAU</div>
 
+<!-- UPDATED NAVIGATION -->
+
 <div class="links">
+
 <a href="selected-works.html" class="active">SELECTED WORKS</a>
+
+<a href="acquisitions.html">ACQUISITIONS</a>
+
 <a href="exhibitions.html">SELECTED EXHIBITIONS + RESIDENCIES</a>
+
 <a href="artist.html">ARTIST</a>
+
 </div>
 
 <div class="viewer">
@@ -354,7 +370,7 @@ const slides = document.querySelectorAll(".slide");
 
 let current = works.length;
 
-/* UPDATE (CLEAN + STABLE) */
+/* UPDATE */
 
 function update(animate=true){
 
@@ -415,7 +431,7 @@ setTimeout(normalize,460);
 window.addEventListener("load", ()=> update(false));
 window.addEventListener("resize", ()=> update(false));
 
-/* ZOOM */
+/* OVERLAY */
 
 let overlayIndex = 0;
 
