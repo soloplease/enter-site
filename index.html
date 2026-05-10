@@ -6,135 +6,155 @@
 <title>Solomon Rousseau</title>
 
 <meta name="description" content="Solomon Rousseau — artist working with systems, structure, and spatial interfaces.">
-
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 
 <style>
+
 body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  background:#f2f2ee; /* soft off-white */
-  font-family:Arial, sans-serif;
+margin:0;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+background:#f2f2ee;
+
+font-family:Arial,sans-serif;
 }
 
-/* wrapper for brackets + input */
+/* WRAPPER */
+
 .wrapper{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
 }
-/* brackets */
+
+/* BRACKETS */
+
 .bracket{
-  font-size:28px;
-  color:#111;
-  line-height:1;
+font-size:28px;
+color:#111;
 }
 
-/* input */
+/* INPUT */
+
 input{
-  border:none;
-  outline:none;
-  background:transparent;
-  font-size:28px;
-  height:28px;
-  line-height:28px;
-  text-align:center;
-  letter-spacing:4px;
+border:none;
+outline:none;
+background:transparent;
 
-  width:60px;
-  min-width:60px;
+font-size:28px;
+text-align:center;
+letter-spacing:4px;
 
-  color:#111;
+width:80px;
 
-  transition:width 0.15s ease;
+color:#111;
 }
 
-/* success / fail states */
-.valid{
-  color:#111;
+/* STATUS */
+
+#statusBox{
+width:14px;
+height:14px;
+
+border:1px solid #111;
+
+margin-left:12px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:12px;
+color:#111;
 }
 
-.invalid{
-  color:#111;
-}
+/* NAME */
 
-/* name */
 .name{
-  margin-top:40px;
-  font-weight:normal;
-  letter-spacing:8px;
-  font-size:14px;
-  color:#111;
+margin-top:40px;
+font-size:14px;
+letter-spacing:8px;
+color:#111;
 }
-  
-  #statusBox{
-  width:14px;
-  height:14px;
-  border:1px solid #111;
-  margin-left:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  color:#111;
-}
+
 </style>
 </head>
 
 <body>
 
 <div class="wrapper">
-  <span class="bracket">[</span>
 
-  <input type="text" id="code" oninput="expand()" onkeydown="handle(event)" autocomplete="off">
+<span class="bracket">[</span>
 
-  <span class="bracket">]</span>
+<input
+type="text"
+id="code"
+onkeydown="handle(event)"
+autocomplete="off"
+spellcheck="false"
+>
 
-  <div id="statusBox"></div>
+<span class="bracket">]</span>
+
+<div id="statusBox"></div>
+
 </div>
-  
+
 <h1 class="name">Solomon Rousseau</h1>
 
 <script>
-const codes = ["axis","strike","line"];
+
+/* =========================
+   PASSWORD LIST
+========================= */
+
+const passwords = [
+"leeufan",
+"rserra",
+];
+
+function handle(e){
+
+if(e.key !== "Enter") return;
 
 const input = document.getElementById("code");
+const box = document.getElementById("statusBox");
 
-/* expand from center */
-function expand(){
-  let len = input.value.length;
-  input.style.width = (40 + len * 14) + "px";
+const value = input.value.trim().toLowerCase();
+
+/* SUCCESS */
+if(passwords.includes(value)){
+
+box.innerHTML = "✓";
+
+/* allow access */
+sessionStorage.setItem("site-auth","granted");
+
+/* redirect */
+setTimeout(()=>{
+window.location.href = "selected-works.html";
+},600);
+
+return;
 }
 
-/* handle enter */
-function handle(e){
-  if(e.key === "Enter"){
-    const box = document.getElementById("statusBox");
+/* FAIL */
 
-    if(codes.includes(input.value)){
-      box.innerHTML = "✓";
+box.innerHTML = "✕";
 
-      setTimeout(()=>{
-        window.location = "gallery.html";
-      }, 700);
+setTimeout(()=>{
+input.value = "";
+box.innerHTML = "";
+},600);
 
-    } else {
-      box.innerHTML = "✕";
-
-      setTimeout(()=>{
-        input.value = "";
-        box.innerHTML = "";
-        expand();
-      }, 700);
-    }
-  }
 }
+
 </script>
 
 </body>
