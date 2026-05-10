@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Acquisitions</title>
+
+<style>
+
+body{
+margin:0;
+background:#f8f8f4;
+overflow:hidden;
+
+font-family:Arial,sans-serif;
+color:#111;
+
+text-transform:uppercase;
+}
+
+/* NAME */
+
+.name{
+position:fixed;
+top:16px;
+left:24px;
+
+font-size:18px;
+font-weight:bold;
+
+letter-spacing:.2px;
+
+z-index:40;
+}
+
+/* LINKS */
+
+.links{
+position:fixed;
+top:24px;
+right:24px;
+
+display:flex;
+gap:22px;
+
+z-index:40;
+}
+
+.links a{
+text-decoration:none;
+color:#111;
+font-size:11px;
+
+transition:.2s ease;
+}
+
+.links a:hover{
+font-weight:bold;
+font-size:12px;
+}
+
+.links a.active{
+font-style:italic;
+}
+
+/* CONTAINER */
+
+.container{
+position:relative;
+
+width:100vw;
+height:100vh;
+
+overflow-y:auto;
+padding:120px 60px 80px 60px;
+
+box-sizing:border-box;
+}
+
+/* SECTION HEADER */
+
+.header{
+font-size:14px;
+letter-spacing:2px;
+margin-bottom:40px;
+}
+
+/* WORK LIST */
+
+.work{
+border-top:1px solid #111;
+
+padding:18px 0;
+
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+
+gap:40px;
+}
+
+.work:last-child{
+border-bottom:1px solid #111;
+}
+
+/* LEFT INFO */
+
+.info{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.title{
+font-size:12px;
+font-style:italic;
+}
+
+.meta{
+font-size:10px;
+opacity:.8;
+line-height:1.4;
+}
+
+/* RIGHT ACTION */
+
+.action{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+gap:10px;
+
+font-size:10px;
+letter-spacing:1px;
+}
+
+/* STATUS TAG */
+
+.tag{
+border:1px solid #111;
+padding:4px 8px;
+font-size:9px;
+}
+
+/* BUTTON */
+
+button{
+background:none;
+border:1px solid #111;
+
+padding:6px 10px;
+
+font-size:9px;
+text-transform:uppercase;
+
+cursor:pointer;
+
+transition:.2s ease;
+}
+
+button:hover{
+background:#111;
+color:#f8f8f4;
+}
+
+/* NOTE */
+
+.note{
+margin-top:60px;
+
+font-size:10px;
+line-height:1.6;
+
+max-width:600px;
+
+opacity:.85;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="name">SOLOMON ROUSSEAU</div>
+
+<div class="links">
+<a href="selected-works.html">SELECTED WORKS</a>
+<a href="acquisitions.html" class="active">ACQUISITIONS</a>
+<a href="artist.html">ARTIST</a>
+</div>
+
+<div class="container">
+
+<div class="header">
+INSTALLATION WORKS — ACQUISITION / COMMISSION
+</div>
+
+<!-- WORK 1 -->
+
+<div class="work">
+
+<div class="info">
+<div class="title">UNTITLED (SCATTER)</div>
+
+<div class="meta">
+STEEL<br>
+375 SQ. FT<br>
+2026<br>
+INSTALLATION SYSTEM
+</div>
+</div>
+
+<div class="action">
+
+<div class="tag">AVAILABLE FOR COMMISSION</div>
+
+<button onclick="contact('scatter')">
+REQUEST ACQUISITION
+</button>
+
+</div>
+
+</div>
+
+<!-- WORK 2 -->
+
+<div class="work">
+
+<div class="info">
+<div class="title">UNTITLED (COIL I)</div>
+
+<div class="meta">
+STEEL<br>
+VARIABLE DIMENSIONS<br>
+2024<br>
+INSTRUCTION-BASED SYSTEM
+</div>
+</div>
+
+<div class="action">
+
+<div class="tag">SITE-ADAPTIVE</div>
+
+<button onclick="contact('coil1')">
+REQUEST PROPOSAL
+</button>
+
+</div>
+
+</div>
+
+<!-- WORK 3 -->
+
+<div class="work">
+
+<div class="info">
+<div class="title">UNTITLED (COIL IX)</div>
+
+<div class="meta">
+STEEL<br>
+23FT D × 1.6FT W<br>
+2026<br>
+STRUCTURAL INSTALLATION
+</div>
+</div>
+
+<div class="action">
+
+<div class="tag">LIMITED COMMISSION</div>
+
+<button onclick="contact('coil9')">
+REQUEST INQUIRY
+</button>
+
+</div>
+
+</div>
+
+<!-- NOTE -->
+
+<div class="note">
+
+All works operate as instruction-based systems.  
+Final realization is dependent on site conditions, structural constraints, and material availability.  
+Each installation is executed as a variable manifestation of a fixed system.
+
+</div>
+
+</div>
+
+<script>
+
+/* SIMPLE CONTACT HANDLER */
+
+function contact(work){
+
+/* replace with your email or assistant email */
+const email = "your@email.com";
+
+const subject =
+"ACQUISITION REQUEST — " + work;
+
+const body =
+"Hello,\n\nI am interested in acquiring / commissioning:\n" +
+work +
+"\n\nPlease provide further information.";
+
+window.location.href =
+`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+}
+
+</script>
+
+</body>
+</html>
