@@ -82,6 +82,8 @@ box-sizing:border-box;
 
 .track{
 display:flex;
+align-items:flex-start;
+
 gap:30px;
 
 will-change:transform;
@@ -89,7 +91,7 @@ will-change:transform;
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
-/* SLIDES */
+/* SLIDE */
 
 .slide{
 flex:none;
@@ -116,9 +118,9 @@ max-width:80vw;
 width:auto;
 height:auto;
 
-object-fit:contain;
-
 display:block;
+
+object-fit:contain;
 
 cursor:zoom-in;
 
@@ -190,7 +192,7 @@ opacity:1;
 transform:scale(1.12);
 }
 
-/* ZOOM TRANSITION */
+/* ZOOM CLONE */
 
 .zoomClone{
 position:fixed;
@@ -387,6 +389,20 @@ ARTIST
 const works = [
 
 {
+title:"UNTITLED (ROWS)",
+material:"STEEL",
+size:"375 SQ. FT",
+year:"2026",
+
+images:[
+"SR-rows.JPG",
+"SR-rows-D1.JPG?v=4",
+"SR-rows-D2.JPG",
+"SR-rows-D3.JPG"
+]
+},
+
+{
 title:"UNTITLED (COIL I)",
 material:"STEEL",
 size:"VARIABLE DIMENSIONS",
@@ -461,7 +477,7 @@ images:[
 ];
 
 /* =========================================
-   BUILD SLIDES
+   BUILD INFINITE TRACK
 ========================================= */
 
 const track =
@@ -501,10 +517,18 @@ return slide;
 
 }
 
-works.forEach((work,i)=>{
+/* TRUE LOOP */
+
+const fullSet = [
+...works,
+...works,
+...works
+];
+
+fullSet.forEach((work,i)=>{
 
 track.appendChild(
-makeSlide(work,i)
+makeSlide(work,i % works.length)
 );
 
 });
@@ -512,13 +536,18 @@ makeSlide(work,i)
 const slides =
 document.querySelectorAll(".slide");
 
-let current = 0;
+let current = works.length;
 
 /* =========================================
-   MAIN SLIDER
+   POSITION
 ========================================= */
 
-function update(){
+function update(animate=true){
+
+track.style.transition =
+animate
+? "transform .45s cubic-bezier(.22,.61,.36,1)"
+: "none";
 
 let offset = 0;
 
@@ -539,7 +568,7 @@ const center =
 track.style.transform =
 `translateX(${center - offset}px)`;
 
-/* ACTIVE STATE */
+/* ACTIVE */
 
 slides.forEach(s=>{
 
@@ -552,26 +581,113 @@ slides[current]
 
 }
 
+/* NORMALIZE */
+
+function normalize(){
+
+if(current >= works.length * 2){
+
+current -= works.length;
+
+update(false);
+
+}
+
+if(current < works.length){
+
+current += works.length;
+
+update(false);
+
+}
+
+}
+
 /* NEXT / PREV */
 
 function nextSlide(){
 
-current =
-(current + 1) % works.length;
+current++;
 
 update();
+
+setTimeout(normalize,460);
 
 }
 
 function prevSlide(){
 
-current =
-(current - 1 + works.length)
-% works.length;
+current--;
 
 update();
 
+setTimeout(normalize,460);
+
 }
+
+/* =========================================
+   TRACKPAD
+========================================= */
+
+let wheelLock = false;
+
+window.addEventListener("wheel",(e)=>{
+
+if(Math.abs(e.deltaX) > 18){
+
+if(wheelLock) return;
+
+wheelLock = true;
+
+if(e.deltaX > 0){
+
+nextSlide();
+
+}else{
+
+prevSlide();
+
+}
+
+setTimeout(()=>{
+
+wheelLock = false;
+
+},420);
+
+}
+
+},{passive:true});
+
+/* =========================================
+   TOUCH
+========================================= */
+
+let startX = 0;
+
+window.addEventListener("touchstart",(e)=>{
+
+startX = e.touches[0].clientX;
+
+});
+
+window.addEventListener("touchend",(e)=>{
+
+let endX = e.changedTouches[0].clientX;
+
+if(startX - endX > 50){
+
+nextSlide();
+
+}
+
+if(endX - startX > 50){
+
+prevSlide();
+
+}
+
+});
 
 /* =========================================
    DETAIL OVERLAY
@@ -581,6 +697,9 @@ let activeWork = null;
 let detailIndex = 0;
 
 function openOverlay(index){
+
+const actualIndex =
+index % works.length;
 
 const imgEl =
 slides[index]
@@ -631,7 +750,8 @@ setTimeout(()=>{
 
 clone.remove();
 
-activeWork = works[index];
+activeWork =
+works[actualIndex];
 
 detailIndex = 0;
 
@@ -645,7 +765,7 @@ document
 
 }
 
-/* RENDER DETAIL */
+/* RENDER */
 
 function renderDetail(){
 
@@ -703,7 +823,7 @@ document
 
 }
 
-/* CLICK OUTSIDE */
+/* OUTSIDE CLICK */
 
 document
 .getElementById("overlay")
@@ -719,11 +839,22 @@ closeOverlay();
 
 /* INIT */
 
-window.onload = update;
+window.addEventListener(
+"load",
+()=>{
+
+update(false);
+
+}
+);
 
 window.addEventListener(
 "resize",
-update
+()=>{
+
+update(false);
+
+}
 );
 
 </script>
