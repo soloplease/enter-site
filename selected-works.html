@@ -13,7 +13,6 @@ overflow:hidden;
 
 font-family:Arial,sans-serif;
 color:#111;
-
 text-transform:uppercase;
 }
 
@@ -26,7 +25,6 @@ left:24px;
 
 font-size:18px;
 font-weight:bold;
-
 letter-spacing:.2px;
 
 z-index:40;
@@ -48,6 +46,7 @@ z-index:40;
 .links a{
 text-decoration:none;
 color:#111;
+
 font-size:11px;
 
 transition:.2s ease;
@@ -66,8 +65,10 @@ font-style:italic;
 
 .viewer{
 position:relative;
+
 width:100vw;
 height:100vh;
+
 overflow:hidden;
 
 display:flex;
@@ -81,8 +82,6 @@ box-sizing:border-box;
 
 .track{
 display:flex;
-align-items:flex-start;
-
 gap:30px;
 
 will-change:transform;
@@ -90,7 +89,7 @@ will-change:transform;
 transition:transform .45s cubic-bezier(.22,.61,.36,1);
 }
 
-/* SLIDE */
+/* SLIDES */
 
 .slide{
 flex:none;
@@ -111,13 +110,15 @@ justify-content:center;
 }
 
 .imageWrap img{
-height:auto;
 max-height:70vh;
-width:auto;
 max-width:80vw;
 
-display:block;
+width:auto;
+height:auto;
+
 object-fit:contain;
+
+display:block;
 
 cursor:zoom-in;
 
@@ -125,10 +126,13 @@ user-select:none;
 -webkit-user-drag:none;
 
 filter:grayscale(100%);
-transition:filter .35s ease;
+
+transition:
+filter .35s ease,
+transform .35s ease;
 }
 
-/* ACTIVE IMAGE */
+/* ACTIVE CENTER IMAGE */
 
 .slide.active img{
 filter:grayscale(0%);
@@ -138,16 +142,19 @@ filter:grayscale(0%);
 
 .caption{
 margin-top:10px;
+
 font-size:11px;
 line-height:1.4;
+
 padding-left:2px;
 }
 
-/* NAV */
+/* NAVIGATION */
 
 .nav{
 position:fixed;
 top:0;
+
 width:18vw;
 height:100vh;
 
@@ -158,14 +165,21 @@ justify-content:center;
 z-index:50;
 }
 
-.nav.left{ left:0; }
-.nav.right{ right:0; }
+.nav.left{
+left:0;
+}
+
+.nav.right{
+right:0;
+}
 
 .arrow{
 font-size:34px;
+
 color:#b8b8b2;
 
-opacity:.10;
+opacity:.1;
+
 transition:.2s ease;
 
 pointer-events:none;
@@ -174,6 +188,22 @@ pointer-events:none;
 .nav:hover .arrow{
 opacity:1;
 transform:scale(1.12);
+}
+
+/* ZOOM TRANSITION */
+
+.zoomClone{
+position:fixed;
+
+z-index:150;
+
+pointer-events:none;
+
+will-change:transform;
+
+transition:
+transform .45s cubic-bezier(.22,.61,.36,1),
+opacity .45s ease;
 }
 
 /* OVERLAY */
@@ -188,7 +218,7 @@ display:none;
 align-items:center;
 justify-content:center;
 
-z-index:120;
+z-index:200;
 }
 
 .overlay.active{
@@ -198,22 +228,19 @@ display:flex;
 .overlayInner{
 display:flex;
 flex-direction:column;
-align-items:flex-start;
+align-items:center;
 }
+
+/* OVERLAY IMAGE */
 
 .overlay img{
 max-width:94vw;
 max-height:84vh;
+
+width:auto;
+height:auto;
+
 object-fit:contain;
-}
-
-.overlayCaption{
-margin-top:14px;
-
-font-size:12px;
-line-height:1.45;
-
-color:#f2f2ee;
 }
 
 /* OVERLAY NAV */
@@ -221,6 +248,7 @@ color:#f2f2ee;
 .overlayNav{
 position:fixed;
 top:0;
+
 width:18vw;
 height:100vh;
 
@@ -228,20 +256,27 @@ display:flex;
 align-items:center;
 justify-content:center;
 
-z-index:130;
+cursor:pointer;
+
+z-index:210;
 }
 
-.overlayNav.left{ left:0; }
-.overlayNav.right{ right:0; }
+.overlayNav.left{
+left:0;
+}
+
+.overlayNav.right{
+right:0;
+}
 
 .overlayArrow{
 font-size:40px;
 
 color:#f2f2ee;
 
-opacity:.14;
+opacity:.2;
 
-transition:.18s ease;
+transition:.2s ease;
 
 pointer-events:none;
 }
@@ -249,6 +284,19 @@ pointer-events:none;
 .overlayNav:hover .overlayArrow{
 opacity:1;
 transform:scale(1.12);
+}
+
+/* OVERLAY CAPTION */
+
+.overlayCaption{
+margin-top:14px;
+
+font-size:11px;
+line-height:1.4;
+
+color:#f2f2ee;
+
+text-align:center;
 }
 
 /* CLOSE */
@@ -259,10 +307,12 @@ top:20px;
 right:28px;
 
 font-size:32px;
+
 color:#f2f2ee;
 
 cursor:pointer;
-z-index:200;
+
+z-index:300;
 }
 
 </style>
@@ -270,19 +320,23 @@ z-index:200;
 
 <body>
 
-<div class="name">SOLOMON ROUSSEAU</div>
-
-<!-- UPDATED NAVIGATION -->
+<div class="name">
+SOLOMON ROUSSEAU
+</div>
 
 <div class="links">
 
-<a href="selected-works.html" class="active">SELECTED WORKS</a>
+<a href="selected-works.html" class="active">
+SELECTED WORKS
+</a>
 
-<a href="acquisitions.html">ACQUISITIONS</a>
+<a href="acquisitions.html">
+ACQUISITIONS
+</a>
 
-<a href="exhibitions.html">SELECTED EXHIBITIONS + RESIDENCIES</a>
-
-<a href="artist.html">ARTIST</a>
+<a href="artist.html">
+ARTIST
+</a>
 
 </div>
 
@@ -304,21 +358,21 @@ z-index:200;
 
 <div class="overlay" id="overlay">
 
-<div class="overlayNav left" onclick="overlayPrev(event)">
+<div class="overlayNav left" onclick="prevDetail(event)">
 <div class="overlayArrow">◀</div>
 </div>
 
-<div class="overlayNav right" onclick="overlayNext(event)">
+<div class="overlayNav right" onclick="nextDetail(event)">
 <div class="overlayArrow">▶</div>
 </div>
 
-<div class="close" onclick="closeZoom()">×</div>
+<div class="close" onclick="closeOverlay()">×</div>
 
 <div class="overlayInner">
 
-<img id="zoomed">
+<img id="detailImg">
 
-<div class="overlayCaption" id="overlayCaption"></div>
+<div class="overlayCaption" id="detailCaption"></div>
 
 </div>
 
@@ -326,23 +380,104 @@ z-index:200;
 
 <script>
 
+/* =========================================
+   WORKS
+========================================= */
+
 const works = [
-{ img:"SR-rows.JPG", title:"UNTITLED (SCATTER)", material:"STEEL", size:"375 SQ. FT", year:"2026" },
-{ img:"SR-rows-D1.JPG?v=4", title:"DETAIL — UNTITLED (SCATTER)", material:"STEEL", size:"375 SQ. FT", year:"2026" },
-{ img:"SR-rows-D2.JPG", title:"UNTITLED (COIL I)", material:"STEEL", size:"12 IN. D x 3.5 IN. W", year:"2024" },
-{ img:"SR-rows-D3.JPG", title:"UNTITLED (COIL IX)", material:"STEEL", size:"23FT D x 1.6FT W", year:"2026" }
+
+{
+title:"UNTITLED (COIL I)",
+material:"STEEL",
+size:"VARIABLE DIMENSIONS",
+year:"2024",
+
+images:[
+"SR-coil(I).webp"
+]
+},
+
+{
+title:"UNTITLED (COIL IX)",
+material:"STEEL",
+size:"23FT D × 1.6FT W",
+year:"2026",
+
+images:[
+"SR-coil(IX).JPG",
+"SR-coil(IX)-D1.JPG",
+"SR-coil(IX)-D2.JPG"
+]
+},
+
+{
+title:"UNTITLED (ROLLS INSTALLATION)",
+material:"STEEL",
+size:"VARIABLE DIMENSIONS",
+year:"2026",
+
+images:[
+"SR-rollsinstall.jpeg",
+"SR-rolls-D1.jpeg",
+"SR-rolls-D2.jpeg"
+]
+},
+
+{
+title:"UNTITLED (SCATTER)",
+material:"STEEL",
+size:"375 SQ. FT",
+year:"2026",
+
+images:[
+"SR-scatter.JPG",
+"SR-scatter-D1.JPG"
+]
+},
+
+{
+title:"UNTITLED (STACK)",
+material:"STEEL",
+size:"VARIABLE DIMENSIONS",
+year:"2026",
+
+images:[
+"SR-stack.JPG"
+]
+},
+
+{
+title:"UNTITLED (TUBES)",
+material:"STEEL",
+size:"VARIABLE DIMENSIONS",
+year:"2026",
+
+images:[
+"SR-tubes.JPG",
+"SR-tubes-D1.JPG"
+]
+}
+
 ];
 
-const track = document.getElementById("track");
+/* =========================================
+   BUILD SLIDES
+========================================= */
+
+const track =
+document.getElementById("track");
 
 function makeSlide(work,index){
 
-const slide = document.createElement("div");
+const slide =
+document.createElement("div");
+
 slide.className = "slide";
 
 slide.innerHTML = `
+
 <div class="imageWrap">
-<img src="${work.img}">
+<img src="${work.images[0]}">
 </div>
 
 <div class="caption">
@@ -351,129 +486,245 @@ slide.innerHTML = `
 <div>${work.size}</div>
 <div>${work.year}</div>
 </div>
+
 `;
 
-slide.querySelector("img").onclick = ()=> openZoom(index);
+slide
+.querySelector("img")
+.onclick = ()=>{
+
+openOverlay(index);
+
+};
 
 return slide;
+
 }
 
-/* BUILD */
+works.forEach((work,i)=>{
 
-const fullSet = [...works,...works,...works];
+track.appendChild(
+makeSlide(work,i)
+);
 
-fullSet.forEach((work,i)=>{
-track.appendChild(makeSlide(work,i % works.length));
 });
 
-const slides = document.querySelectorAll(".slide");
+const slides =
+document.querySelectorAll(".slide");
 
-let current = works.length;
+let current = 0;
 
-/* UPDATE */
+/* =========================================
+   MAIN SLIDER
+========================================= */
 
-function update(animate=true){
-
-track.style.transition =
-animate
-? "transform .45s cubic-bezier(.22,.61,.36,1)"
-: "none";
-
-slides.forEach(s => s.classList.remove("active"));
-slides[current].classList.add("active");
+function update(){
 
 let offset = 0;
 
 for(let i=0;i<current;i++){
-offset += slides[i].offsetWidth + 30;
+
+offset +=
+slides[i].offsetWidth + 30;
+
 }
 
-const activeWidth = slides[current].offsetWidth;
+const activeWidth =
+slides[current].offsetWidth;
 
 const center =
-(window.innerWidth / 2) - (activeWidth / 2);
+(window.innerWidth / 2) -
+(activeWidth / 2);
 
 track.style.transform =
 `translateX(${center - offset}px)`;
+
+/* ACTIVE STATE */
+
+slides.forEach(s=>{
+
+s.classList.remove("active");
+
+});
+
+slides[current]
+.classList.add("active");
+
 }
 
-/* LOOP */
-
-function normalize(){
-
-if(current >= works.length * 2){
-current -= works.length;
-update(false);
-}
-
-if(current < works.length){
-current += works.length;
-update(false);
-}
-}
-
-/* NAV */
+/* NEXT / PREV */
 
 function nextSlide(){
-current++;
+
+current =
+(current + 1) % works.length;
+
 update();
-setTimeout(normalize,460);
+
 }
 
 function prevSlide(){
-current--;
+
+current =
+(current - 1 + works.length)
+% works.length;
+
 update();
-setTimeout(normalize,460);
+
 }
+
+/* =========================================
+   DETAIL OVERLAY
+========================================= */
+
+let activeWork = null;
+let detailIndex = 0;
+
+function openOverlay(index){
+
+const imgEl =
+slides[index]
+.querySelector("img");
+
+const rect =
+imgEl.getBoundingClientRect();
+
+/* CLONE */
+
+const clone =
+imgEl.cloneNode(true);
+
+clone.classList.add("zoomClone");
+
+clone.style.top =
+rect.top + "px";
+
+clone.style.left =
+rect.left + "px";
+
+clone.style.width =
+rect.width + "px";
+
+clone.style.height =
+rect.height + "px";
+
+document.body.appendChild(clone);
+
+/* ANIMATE */
+
+requestAnimationFrame(()=>{
+
+clone.style.transform =
+`translate(
+${window.innerWidth/2 - rect.left - rect.width/2}px,
+${window.innerHeight/2 - rect.top - rect.height/2}px
+)
+scale(2)`;
+
+clone.style.opacity = "0";
+
+});
+
+/* OPEN */
+
+setTimeout(()=>{
+
+clone.remove();
+
+activeWork = works[index];
+
+detailIndex = 0;
+
+renderDetail();
+
+document
+.getElementById("overlay")
+.classList.add("active");
+
+},350);
+
+}
+
+/* RENDER DETAIL */
+
+function renderDetail(){
+
+document
+.getElementById("detailImg")
+.src =
+activeWork.images[detailIndex];
+
+document
+.getElementById("detailCaption")
+.innerHTML = `
+
+<div><i>${activeWork.title}</i></div>
+<div>${activeWork.material}</div>
+<div>${activeWork.size}</div>
+<div>${activeWork.year}</div>
+
+`;
+
+}
+
+/* DETAIL NAV */
+
+function nextDetail(e){
+
+e.stopPropagation();
+
+detailIndex =
+(detailIndex + 1)
+% activeWork.images.length;
+
+renderDetail();
+
+}
+
+function prevDetail(e){
+
+e.stopPropagation();
+
+detailIndex =
+(detailIndex - 1 + activeWork.images.length)
+% activeWork.images.length;
+
+renderDetail();
+
+}
+
+/* CLOSE */
+
+function closeOverlay(){
+
+document
+.getElementById("overlay")
+.classList.remove("active");
+
+}
+
+/* CLICK OUTSIDE */
+
+document
+.getElementById("overlay")
+.addEventListener("click",(e)=>{
+
+if(e.target.id === "overlay"){
+
+closeOverlay();
+
+}
+
+});
 
 /* INIT */
 
-window.addEventListener("load", ()=> update(false));
-window.addEventListener("resize", ()=> update(false));
+window.onload = update;
 
-/* OVERLAY */
-
-let overlayIndex = 0;
-
-function openZoom(index){
-overlayIndex = index;
-document.getElementById("overlay").classList.add("active");
-renderOverlay();
-}
-
-function renderOverlay(){
-
-const work = works[overlayIndex];
-
-document.getElementById("zoomed").src = work.img;
-
-document.getElementById("overlayCaption").innerHTML = `
-<div><i>${work.title}</i></div>
-<div>${work.material}</div>
-<div>${work.size}</div>
-<div>${work.year}</div>
-`;
-}
-
-function overlayNext(e){
-e.stopPropagation();
-overlayIndex = (overlayIndex + 1) % works.length;
-renderOverlay();
-}
-
-function overlayPrev(e){
-e.stopPropagation();
-overlayIndex = (overlayIndex - 1 + works.length) % works.length;
-renderOverlay();
-}
-
-function closeZoom(){
-document.getElementById("overlay").classList.remove("active");
-}
-
-document.getElementById("overlay").addEventListener("click",(e)=>{
-if(e.target.id === "overlay") closeZoom();
-});
+window.addEventListener(
+"resize",
+update
+);
 
 </script>
 
