@@ -91,6 +91,7 @@ input{
 <body>
 
 <div class="wrapper">
+
   <span class="bracket">[</span>
 
   <input
@@ -103,19 +104,25 @@ input{
   <span class="bracket">]</span>
 
   <div id="statusBox"></div>
+
 </div>
 
 <div class="name">SOLOMON ROUSSEAU</div>
 
 <script>
-const codes = ["axis","strike","line"];
+
+const codes = ["leeufan"];
 
 const input = document.getElementById("code");
 
 /* expand from center */
 function expand(){
+
   let len = input.value.length;
-  input.style.width = (40 + len * 14) + "px";
+
+  input.style.width =
+    (40 + len * 14) + "px";
+
 }
 
 /* handle enter */
@@ -123,7 +130,8 @@ function handle(e){
 
   if(e.key === "Enter"){
 
-    const box = document.getElementById("statusBox");
+    const box =
+      document.getElementById("statusBox");
 
     if(codes.includes(input.value)){
 
@@ -131,7 +139,8 @@ function handle(e){
 
       setTimeout(()=>{
 
-        window.location = "gallery.html";
+        window.location =
+          "selected-works.html";
 
       },700);
 
@@ -142,13 +151,19 @@ function handle(e){
       setTimeout(()=>{
 
         input.value = "";
+
         box.innerHTML = "";
+
         expand();
 
       },700);
+
     }
+
   }
+
 }
+
 </script>
 
 </body>
