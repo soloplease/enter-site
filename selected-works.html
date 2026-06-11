@@ -11,9 +11,9 @@ margin:0;
 background:#f8f8f4;
 overflow:hidden;
 font-family:Arial,sans-serif;
-color:#111;
 text-transform:uppercase;
 cursor:default;
+color:#111;
 }
 
 /* NAME */
@@ -33,15 +33,16 @@ top:24px;
 right:24px;
 display:flex;
 gap:22px;
-z-index:40;
+z-index:200; /* ABOVE NAV AREAS */
+pointer-events:auto;
 }
 
 .links a{
 text-decoration:none;
 color:#111;
 font-size:11px;
-cursor:pointer;
 transition:.2s ease;
+cursor:pointer;
 }
 
 .links a:hover{
@@ -102,17 +103,20 @@ transition:filter .3s ease;
 filter:grayscale(0%);
 }
 
-/* NAV */
+/* NAV (FIXED — NO UI BLOCKING) */
 .nav{
 position:fixed;
 top:0;
-width:12vw;
+width:120px;          /* small safe zone ONLY */
 height:100vh;
+
 display:flex;
 align-items:center;
 justify-content:center;
+
 z-index:50;
-cursor:pointer; /* IMPORTANT FIX */
+
+pointer-events:none;  /* IMPORTANT: prevents blocking links */
 }
 
 .nav.left{left:0;}
@@ -123,11 +127,11 @@ font-size:34px;
 color:#b8b8b2;
 opacity:.25;
 transition:.2s ease;
+pointer-events:auto; /* only arrow is active */
 user-select:none;
-pointer-events:none;
 }
 
-/* IMPORTANT: proper hover highlight */
+/* hover highlight */
 .nav:hover .arrow{
 color:#ffffff;
 opacity:1;
@@ -152,7 +156,7 @@ display:flex;
 .overlayNav{
 position:fixed;
 top:0;
-width:12vw;
+width:120px;
 height:100vh;
 display:flex;
 align-items:center;
@@ -167,7 +171,7 @@ cursor:pointer;
 .overlayArrow{
 font-size:40px;
 color:#fff;
-opacity:.25;
+opacity:.3;
 transition:.2s ease;
 }
 
@@ -187,6 +191,7 @@ z-index:1020;
 cursor:pointer;
 }
 
+/* CAPTION */
 .overlayCaption{
 margin-top:14px;
 color:#fff;
@@ -203,7 +208,7 @@ text-align:center;
 
 <div class="links">
 <a href="selected-works.html" class="active">SELECTED WORKS</a>
-<a href="exhibitions.html">EXHIBITIONS</a>
+<a href="exhibitions.html">SELECTED EXHIBITIONS + RESIDENCIES</a>
 <a href="acquisitions.html">ACQUISITIONS</a>
 <a href="artist.html">ARTIST</a>
 </div>
@@ -248,87 +253,85 @@ images:["SR-tubes.JPG","SR-tubes-D1.JPG"]
 }
 ];
 
-/* INFINITE LOOP SET */
-const track=document.getElementById("track");
-const loop=[...works,...works,...works];
+/* TRUE INFINITE LOOP (NO SNAP BACK) */
+const track = document.getElementById("track");
+const loop = [...works, ...works, ...works];
 
 loop.forEach((w,i)=>{
-const div=document.createElement("div");
-div.className="slide";
-div.innerHTML=`<div class="imageWrap"><img src="${w.images[0]}"></div>`;
-div.querySelector("img").onclick=()=>open(i%works.length);
-track.appendChild(div);
+const slide = document.createElement("div");
+slide.className = "slide";
+
+slide.innerHTML = `
+<div class="imageWrap">
+<img src="${w.images[0]}">
+</div>
+`;
+
+slide.querySelector("img").onclick = () => open(i % works.length);
+
+track.appendChild(slide);
 });
 
-const slides=document.querySelectorAll(".slide");
+const slides = document.querySelectorAll(".slide");
 
-/* START ON COIL IX */
+/* START POSITION (COIL IX CENTERED) */
 let current = works.length + 2;
 
-/* CORE RENDER */
+/* RENDER */
 function render(){
-let offset=0;
+
+let offset = 0;
 
 for(let i=0;i<current;i++){
 offset += slides[i].offsetWidth + 30;
 }
 
-const center=(window.innerWidth/2)-(slides[current].offsetWidth/2);
+const center = (window.innerWidth/2) - (slides[current].offsetWidth/2);
 
-track.style.transform=`translateX(${center-offset}px)`;
+track.style.transform = `translateX(${center - offset}px)`;
 
 slides.forEach(s=>s.classList.remove("active"));
 slides[current].classList.add("active");
 }
 
-/* TRUE INFINITE (NO REEL BACK GLITCH) */
-function normalize(){
-if(current >= works.length*2){
-current -= works.length;
-}
-if(current < works.length){
-current += works.length;
-}
-}
-
-/* NAV */
+/* INFINITE (NO VISUAL RESET) */
 function next(){
 current++;
 render();
-requestAnimationFrame(()=>setTimeout(normalize,400));
+if(current >= works.length * 2) current -= works.length;
 }
 
 function prev(){
 current--;
 render();
-requestAnimationFrame(()=>setTimeout(normalize,400));
+if(current < works.length) current += works.length;
 }
 
 /* OVERLAY */
-let active=null;
-let dIndex=0;
+let active = null;
+let dIndex = 0;
 
 function open(i){
-active=works[i];
-dIndex=0;
+active = works[i];
+dIndex = 0;
 show();
 document.getElementById("overlay").classList.add("active");
 }
 
 function show(){
-document.getElementById("overlayImg").src=active.images[dIndex];
-document.getElementById("caption").innerText=active.title;
+document.getElementById("overlayImg").src = active.images[dIndex];
+document.getElementById("caption").innerText = active.title;
 }
 
 function nextDetail(e){
 e.stopPropagation();
-dIndex=(dIndex+1)%active.images.length;
+dIndex = (dIndex + 1) % active.images.length;
 show();
 }
 
 function prevDetail(e){
 e.stopPropagation();
-dIndex=(dIndex-1+active.images.length)%active.images.length;
+dIndex = (dIndex - 1 + active.images.length) % active.images.length;
 show();
 }
 
@@ -337,8 +340,8 @@ document.getElementById("overlay").classList.remove("active");
 }
 
 /* INIT */
-window.addEventListener("load",render);
-window.addEventListener("resize",render);
+window.addEventListener("load", render);
+window.addEventListener("resize", render);
 
 </script>
 
