@@ -16,26 +16,23 @@ text-transform:uppercase;
 }
 
 /* NAME */
-
 .name{
 position:fixed;
 top:16px;
 left:24px;
 font-size:18px;
 font-weight:bold;
-letter-spacing:.2px;
 z-index:40;
 }
 
 /* LINKS */
-
 .links{
 position:fixed;
 top:24px;
 right:24px;
 display:flex;
 gap:22px;
-z-index:40; /* IMPORTANT: stays normal layer */
+z-index:40;
 }
 
 .links a{
@@ -55,39 +52,31 @@ font-style:italic;
 }
 
 /* VIEWER */
-
 .viewer{
 position:relative;
 width:100vw;
 height:100vh;
-overflow:hidden;
 display:flex;
 align-items:center;
-padding-top:40px;
-box-sizing:border-box;
+overflow:hidden;
 }
 
 /* TRACK */
-
 .track{
 display:flex;
-align-items:flex-start;
 gap:30px;
 will-change:transform;
-transition:transform .45s cubic-bezier(.22,.61,.36,1);
+transition:transform .35s cubic-bezier(.22,.61,.36,1);
 }
 
 /* SLIDE */
-
 .slide{
 flex:none;
 display:flex;
 flex-direction:column;
-align-items:flex-start;
 }
 
 /* IMAGE */
-
 .imageWrap{
 height:70vh;
 display:flex;
@@ -98,32 +87,20 @@ justify-content:center;
 .imageWrap img{
 max-height:70vh;
 max-width:80vw;
-width:auto;
-height:auto;
-display:block;
 object-fit:contain;
+display:block;
 cursor:zoom-in;
 user-select:none;
 -webkit-user-drag:none;
 filter:grayscale(100%);
-transition:filter .35s ease;
+transition:filter .3s ease;
 }
 
 .slide.active img{
 filter:grayscale(0%);
 }
 
-/* CAPTION */
-
-.caption{
-margin-top:10px;
-font-size:11px;
-line-height:1.4;
-padding-left:2px;
-}
-
 /* NAV */
-
 .nav{
 position:fixed;
 top:0;
@@ -135,36 +112,21 @@ justify-content:center;
 z-index:50;
 }
 
-.nav.left{ left:0; }
-.nav.right{ right:0; }
+.nav.left{left:0;}
+.nav.right{right:0;}
 
 .arrow{
 font-size:34px;
-color:#b8b8b2;
-opacity:.1;
+opacity:.15;
 transition:.2s ease;
-pointer-events:none;
 }
 
 .nav:hover .arrow{
 opacity:1;
-transform:scale(1.12);
+transform:scale(1.1);
 }
 
-/* ZOOM ANIMATION CLONE */
-
-.zoomClone{
-position:fixed;
-z-index:150;
-pointer-events:none;
-transition:transform .45s ease, opacity .45s ease;
-will-change:transform;
-}
-
-/* =========================
-   OVERLAY (FIXED MODAL)
-========================= */
-
+/* OVERLAY */
 .overlay{
 position:fixed;
 inset:0;
@@ -172,30 +134,12 @@ background:rgba(0,0,0,.92);
 display:none;
 align-items:center;
 justify-content:center;
-z-index:1000; /* ABOVE EVERYTHING */
+z-index:1000;
 }
 
 .overlay.active{
 display:flex;
 }
-
-.overlayInner{
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-/* IMAGE */
-
-.overlay img{
-max-width:94vw;
-max-height:84vh;
-width:auto;
-height:auto;
-object-fit:contain;
-}
-
-/* OVERLAY NAV */
 
 .overlayNav{
 position:fixed;
@@ -205,46 +149,39 @@ height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
-cursor:pointer;
-z-index:1010; /* above overlay */
+z-index:1010;
 }
 
-.overlayNav.left{ left:0; }
-.overlayNav.right{ right:0; }
+.overlayNav.left{left:0;}
+.overlayNav.right{right:0;}
 
 .overlayArrow{
+color:#fff;
 font-size:40px;
-color:#f2f2ee;
 opacity:.2;
 transition:.2s ease;
-pointer-events:none;
 }
 
 .overlayNav:hover .overlayArrow{
 opacity:1;
-transform:scale(1.12);
+transform:scale(1.1);
 }
-
-/* CAPTION */
-
-.overlayCaption{
-margin-top:14px;
-font-size:11px;
-line-height:1.4;
-color:#f2f2ee;
-text-align:center;
-}
-
-/* CLOSE */
 
 .close{
 position:absolute;
 top:20px;
 right:28px;
 font-size:32px;
-color:#f2f2ee;
+color:#fff;
+z-index:1020;
 cursor:pointer;
-z-index:1020; /* highest */
+}
+
+.overlayCaption{
+margin-top:14px;
+color:#fff;
+font-size:11px;
+text-align:center;
 }
 
 </style>
@@ -262,132 +199,72 @@ z-index:1020; /* highest */
 </div>
 
 <div class="viewer">
-
-<div class="nav left" onclick="prevSlide()"><div class="arrow">◀</div></div>
-<div class="nav right" onclick="nextSlide()"><div class="arrow">▶</div></div>
-
+<div class="nav left" onclick="prev()"><div class="arrow">◀</div></div>
+<div class="nav right" onclick="next()"><div class="arrow">▶</div></div>
 <div class="track" id="track"></div>
-
 </div>
-
-<!-- OVERLAY -->
 
 <div class="overlay" id="overlay">
-
-<div class="overlayNav left" onclick="prevDetail(event)">
-<div class="overlayArrow">◀</div>
-</div>
-
-<div class="overlayNav right" onclick="nextDetail(event)">
-<div class="overlayArrow">▶</div>
-</div>
-
+<div class="overlayNav left" onclick="prevDetail(event)"><div class="overlayArrow">◀</div></div>
+<div class="overlayNav right" onclick="nextDetail(event)"><div class="overlayArrow">▶</div></div>
 <div class="close" onclick="closeOverlay()">×</div>
-
-<div class="overlayInner">
-<img id="detailImg">
-<div class="overlayCaption" id="detailCaption"></div>
-</div>
-
+<div class="overlayCaption" id="caption"></div>
+<img id="overlayImg">
 </div>
 
 <script>
 
+/* WORKS */
 const works = [
-
 {
 title:"UNTITLED (ROWS)",
-material:"STEEL",
-size:"375 SQ. FT",
-year:"2026",
-images:[
-"SR-rows.JPG",
-"SR-rows-D1.JPG?v=4",
-"SR-rows-D2.JPG",
-"SR-rows-D3.JPG"
-]
+images:["SR-rows.JPG","SR-rows-D1.JPG","SR-rows-D2.JPG","SR-rows-D3.JPG"]
 },
-
 {
 title:"UNTITLED (COIL I)",
-material:"STEEL",
-size:"VARIABLE",
-year:"2024",
 images:["SR-coil(I).webp"]
 },
-
 {
 title:"UNTITLED (COIL IX)",
-material:"STEEL",
-size:"23FT",
-year:"2026",
-images:[
-"SR-coil(IX).JPG",
-"SR-coil(IX)-D1.JPG",
-"SR-coil(IX)-D2.JPG"
-]
+images:["SR-coil(IX).JPG","SR-coil(IX)-D1.JPG","SR-coil(IX)-D2.JPG"]
 },
-
 {
 title:"UNTITLED (SCATTER)",
-material:"STEEL",
-size:"375 SQ. FT",
-year:"2026",
 images:["SR-scatter.JPG","SR-scatter-D1.JPG"]
 },
-
 {
 title:"UNTITLED (TUBES)",
-material:"STEEL",
-size:"VARIABLE",
-year:"2026",
 images:["SR-tubes.JPG","SR-tubes-D1.JPG"]
 }
-
 ];
 
-const track = document.getElementById("track");
+/* build infinite loop */
+const track=document.getElementById("track");
+const loop=[...works,...works,...works];
 
-function makeSlide(work,index){
-
-const slide = document.createElement("div");
-slide.className="slide";
-
-slide.innerHTML = `
+loop.forEach((w,i)=>{
+const d=document.createElement("div");
+d.className="slide";
+d.innerHTML=`
 <div class="imageWrap">
-<img src="${work.images[0]}">
-</div>
-<div class="caption">
-<div><i>${work.title}</i></div>
-<div>${work.material}</div>
-<div>${work.size}</div>
-<div>${work.year}</div>
+<img src="${w.images[0]}">
 </div>
 `;
-
-slide.querySelector("img").onclick = ()=>openOverlay(index);
-
-return slide;
-}
-
-/* build loop */
-
-const fullSet=[...works,...works,...works];
-
-fullSet.forEach((w,i)=>{
-track.appendChild(makeSlide(w,i%works.length));
+d.querySelector("img").onclick=()=>open(i%works.length);
+track.appendChild(d);
 });
 
 const slides=document.querySelectorAll(".slide");
-let current=works.length;
 
-/* carousel */
+/* START ON COIL IX (index 2) */
+let current = works.length + 2;
 
-function update(){
+/* smooth update */
+function render(){
 let offset=0;
 
 for(let i=0;i<current;i++){
-offset += slides[i].offsetWidth+30;
+offset+=slides[i].offsetWidth+30;
 }
 
 const center=(window.innerWidth/2)-(slides[current].offsetWidth/2);
@@ -398,49 +275,57 @@ slides.forEach(s=>s.classList.remove("active"));
 slides[current].classList.add("active");
 }
 
-function nextSlide(){ current++; update(); normalize(); }
-function prevSlide(){ current--; update(); normalize(); }
+/* infinite without snapping */
+function fixLoop(){
+if(current>=works.length*2){
+current-=works.length;
+render();
+}
+if(current<works.length){
+current+=works.length;
+render();
+}
+}
 
-function normalize(){
-if(current>=works.length*2){ current-=works.length; update(); }
-if(current<works.length){ current+=works.length; update(); }
+/* nav */
+function next(){
+current++;
+render();
+setTimeout(fixLoop,350);
+}
+
+function prev(){
+current--;
+render();
+setTimeout(fixLoop,350);
 }
 
 /* overlay */
+let active=null;
+let dIndex=0;
 
-let activeWork;
-let detailIndex=0;
-
-function openOverlay(i){
-
-activeWork=works[i%works.length];
-detailIndex=0;
-
-renderDetail();
+function open(i){
+active=works[i];
+dIndex=0;
+show();
 document.getElementById("overlay").classList.add("active");
 }
 
-function renderDetail(){
-document.getElementById("detailImg").src=activeWork.images[detailIndex];
-
-document.getElementById("detailCaption").innerHTML=`
-<div><i>${activeWork.title}</i></div>
-<div>${activeWork.material}</div>
-<div>${activeWork.size}</div>
-<div>${activeWork.year}</div>
-`;
+function show(){
+document.getElementById("overlayImg").src=active.images[dIndex];
+document.getElementById("caption").innerHTML=active.title;
 }
 
 function nextDetail(e){
 e.stopPropagation();
-detailIndex=(detailIndex+1)%activeWork.images.length;
-renderDetail();
+dIndex=(dIndex+1)%active.images.length;
+show();
 }
 
 function prevDetail(e){
 e.stopPropagation();
-detailIndex=(detailIndex-1+activeWork.images.length)%activeWork.images.length;
-renderDetail();
+dIndex=(dIndex-1+active.images.length)%active.images.length;
+show();
 }
 
 function closeOverlay(){
@@ -448,9 +333,8 @@ document.getElementById("overlay").classList.remove("active");
 }
 
 /* init */
-
-window.addEventListener("load",update);
-window.addEventListener("resize",update);
+window.addEventListener("load",render);
+window.addEventListener("resize",render);
 
 </script>
 
