@@ -13,6 +13,7 @@ overflow:hidden;
 font-family:Arial,sans-serif;
 color:#111;
 text-transform:uppercase;
+cursor:default;
 }
 
 /* NAME */
@@ -39,6 +40,7 @@ z-index:40;
 text-decoration:none;
 color:#111;
 font-size:11px;
+cursor:pointer;
 transition:.2s ease;
 }
 
@@ -66,7 +68,7 @@ overflow:hidden;
 display:flex;
 gap:30px;
 will-change:transform;
-transition:transform .35s cubic-bezier(.22,.61,.36,1);
+transition:transform .4s cubic-bezier(.22,.61,.36,1);
 }
 
 /* SLIDE */
@@ -89,9 +91,9 @@ max-height:70vh;
 max-width:80vw;
 object-fit:contain;
 display:block;
-cursor:zoom-in;
 user-select:none;
 -webkit-user-drag:none;
+cursor:zoom-in;
 filter:grayscale(100%);
 transition:filter .3s ease;
 }
@@ -110,6 +112,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 z-index:50;
+cursor:pointer; /* IMPORTANT FIX */
 }
 
 .nav.left{left:0;}
@@ -117,13 +120,18 @@ z-index:50;
 
 .arrow{
 font-size:34px;
-opacity:.15;
+color:#b8b8b2;
+opacity:.25;
 transition:.2s ease;
+user-select:none;
+pointer-events:none;
 }
 
+/* IMPORTANT: proper hover highlight */
 .nav:hover .arrow{
+color:#ffffff;
 opacity:1;
-transform:scale(1.1);
+transform:scale(1.15);
 }
 
 /* OVERLAY */
@@ -150,23 +158,25 @@ display:flex;
 align-items:center;
 justify-content:center;
 z-index:1010;
+cursor:pointer;
 }
 
 .overlayNav.left{left:0;}
 .overlayNav.right{right:0;}
 
 .overlayArrow{
-color:#fff;
 font-size:40px;
-opacity:.2;
+color:#fff;
+opacity:.25;
 transition:.2s ease;
 }
 
 .overlayNav:hover .overlayArrow{
 opacity:1;
-transform:scale(1.1);
+transform:scale(1.15);
 }
 
+/* CLOSE */
 .close{
 position:absolute;
 top:20px;
@@ -193,7 +203,7 @@ text-align:center;
 
 <div class="links">
 <a href="selected-works.html" class="active">SELECTED WORKS</a>
-<a href="exhibitions.html">SELECTED EXHIBITIONS + RESIDENCIES</a>
+<a href="exhibitions.html">EXHIBITIONS</a>
 <a href="acquisitions.html">ACQUISITIONS</a>
 <a href="artist.html">ARTIST</a>
 </div>
@@ -208,8 +218,8 @@ text-align:center;
 <div class="overlayNav left" onclick="prevDetail(event)"><div class="overlayArrow">◀</div></div>
 <div class="overlayNav right" onclick="nextDetail(event)"><div class="overlayArrow">▶</div></div>
 <div class="close" onclick="closeOverlay()">×</div>
-<div class="overlayCaption" id="caption"></div>
 <img id="overlayImg">
+<div class="overlayCaption" id="caption"></div>
 </div>
 
 <script>
@@ -217,54 +227,50 @@ text-align:center;
 /* WORKS */
 const works = [
 {
-title:"UNTITLED (ROWS)",
+title:"ROWS",
 images:["SR-rows.JPG","SR-rows-D1.JPG","SR-rows-D2.JPG","SR-rows-D3.JPG"]
 },
 {
-title:"UNTITLED (COIL I)",
+title:"COIL I",
 images:["SR-coil(I).webp"]
 },
 {
-title:"UNTITLED (COIL IX)",
+title:"COIL IX",
 images:["SR-coil(IX).JPG","SR-coil(IX)-D1.JPG","SR-coil(IX)-D2.JPG"]
 },
 {
-title:"UNTITLED (SCATTER)",
+title:"SCATTER",
 images:["SR-scatter.JPG","SR-scatter-D1.JPG"]
 },
 {
-title:"UNTITLED (TUBES)",
+title:"TUBES",
 images:["SR-tubes.JPG","SR-tubes-D1.JPG"]
 }
 ];
 
-/* build infinite loop */
+/* INFINITE LOOP SET */
 const track=document.getElementById("track");
 const loop=[...works,...works,...works];
 
 loop.forEach((w,i)=>{
-const d=document.createElement("div");
-d.className="slide";
-d.innerHTML=`
-<div class="imageWrap">
-<img src="${w.images[0]}">
-</div>
-`;
-d.querySelector("img").onclick=()=>open(i%works.length);
-track.appendChild(d);
+const div=document.createElement("div");
+div.className="slide";
+div.innerHTML=`<div class="imageWrap"><img src="${w.images[0]}"></div>`;
+div.querySelector("img").onclick=()=>open(i%works.length);
+track.appendChild(div);
 });
 
 const slides=document.querySelectorAll(".slide");
 
-/* START ON COIL IX (index 2) */
+/* START ON COIL IX */
 let current = works.length + 2;
 
-/* smooth update */
+/* CORE RENDER */
 function render(){
 let offset=0;
 
 for(let i=0;i<current;i++){
-offset+=slides[i].offsetWidth+30;
+offset += slides[i].offsetWidth + 30;
 }
 
 const center=(window.innerWidth/2)-(slides[current].offsetWidth/2);
@@ -275,32 +281,30 @@ slides.forEach(s=>s.classList.remove("active"));
 slides[current].classList.add("active");
 }
 
-/* infinite without snapping */
-function fixLoop(){
-if(current>=works.length*2){
-current-=works.length;
-render();
+/* TRUE INFINITE (NO REEL BACK GLITCH) */
+function normalize(){
+if(current >= works.length*2){
+current -= works.length;
 }
-if(current<works.length){
-current+=works.length;
-render();
+if(current < works.length){
+current += works.length;
 }
 }
 
-/* nav */
+/* NAV */
 function next(){
 current++;
 render();
-setTimeout(fixLoop,350);
+requestAnimationFrame(()=>setTimeout(normalize,400));
 }
 
 function prev(){
 current--;
 render();
-setTimeout(fixLoop,350);
+requestAnimationFrame(()=>setTimeout(normalize,400));
 }
 
-/* overlay */
+/* OVERLAY */
 let active=null;
 let dIndex=0;
 
@@ -313,7 +317,7 @@ document.getElementById("overlay").classList.add("active");
 
 function show(){
 document.getElementById("overlayImg").src=active.images[dIndex];
-document.getElementById("caption").innerHTML=active.title;
+document.getElementById("caption").innerText=active.title;
 }
 
 function nextDetail(e){
@@ -332,7 +336,7 @@ function closeOverlay(){
 document.getElementById("overlay").classList.remove("active");
 }
 
-/* init */
+/* INIT */
 window.addEventListener("load",render);
 window.addEventListener("resize",render);
 
