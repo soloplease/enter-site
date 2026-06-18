@@ -12,8 +12,8 @@ background:#f8f8f4;
 overflow:hidden;
 font-family:Arial,sans-serif;
 text-transform:uppercase;
-cursor:default;
 color:#111;
+cursor:default;
 }
 
 /* NAME */
@@ -33,8 +33,7 @@ top:24px;
 right:24px;
 display:flex;
 gap:22px;
-z-index:200; /* ABOVE NAV AREAS */
-pointer-events:auto;
+z-index:300;
 }
 
 .links a{
@@ -69,17 +68,18 @@ overflow:hidden;
 display:flex;
 gap:30px;
 will-change:transform;
-transition:transform .4s cubic-bezier(.22,.61,.36,1);
+transition:transform .55s cubic-bezier(.22,.61,.36,1);
 }
 
-/* SLIDE */
+/* SLIDES */
 .slide{
 flex:none;
 display:flex;
 flex-direction:column;
+align-items:flex-start;
 }
 
-/* IMAGE */
+/* IMAGE WRAP */
 .imageWrap{
 height:70vh;
 display:flex;
@@ -91,58 +91,68 @@ justify-content:center;
 max-height:70vh;
 max-width:80vw;
 object-fit:contain;
-display:block;
 user-select:none;
 -webkit-user-drag:none;
 cursor:zoom-in;
+transition:filter .3s ease, transform .3s ease;
 filter:grayscale(100%);
-transition:filter .3s ease;
 }
 
+/* CENTER ACTIVE IMAGE */
 .slide.active img{
 filter:grayscale(0%);
 }
 
-/* NAV (FIXED — NO UI BLOCKING) */
+/* CAPTION */
+.caption{
+margin-top:10px;
+font-size:11px;
+line-height:1.4;
+}
+
+/* =========================
+   NAVIGATION ARROWS
+========================= */
+
 .nav{
 position:fixed;
 top:0;
-width:120px;          /* small safe zone ONLY */
+width:140px;
 height:100vh;
-
 display:flex;
 align-items:center;
 justify-content:center;
-
-z-index:50;
-
-pointer-events:none;  /* IMPORTANT: prevents blocking links */
+z-index:60;
+pointer-events:none;
 }
 
 .nav.left{left:0;}
 .nav.right{right:0;}
 
 .arrow{
-font-size:34px;
-color:#b8b8b2;
-opacity:.25;
-transition:.2s ease;
-pointer-events:auto; /* only arrow is active */
+font-size:46px;
+color:#cfcfcf;   /* visible even idle */
+opacity:0.9;
+transition:.25s ease;
+pointer-events:auto;
 user-select:none;
 }
 
-/* hover highlight */
+/* STRONG HOVER EMPHASIS */
 .nav:hover .arrow{
 color:#ffffff;
 opacity:1;
-transform:scale(1.15);
+transform:scale(1.2);
 }
 
-/* OVERLAY */
+/* =========================
+   OVERLAY
+========================= */
+
 .overlay{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.92);
+background:rgba(0,0,0,.94);
 display:none;
 align-items:center;
 justify-content:center;
@@ -153,10 +163,27 @@ z-index:1000;
 display:flex;
 }
 
+/* overlay image constraint */
+.overlayInner{
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.overlay img{
+max-width:92vw;
+max-height:82vh;
+width:auto;
+height:auto;
+object-fit:contain;
+display:block;
+}
+
+/* overlay nav */
 .overlayNav{
 position:fixed;
 top:0;
-width:120px;
+width:140px;
 height:100vh;
 display:flex;
 align-items:center;
@@ -169,15 +196,15 @@ cursor:pointer;
 .overlayNav.right{right:0;}
 
 .overlayArrow{
-font-size:40px;
+font-size:46px;
 color:#fff;
-opacity:.3;
+opacity:0.35;
 transition:.2s ease;
 }
 
 .overlayNav:hover .overlayArrow{
 opacity:1;
-transform:scale(1.15);
+transform:scale(1.2);
 }
 
 /* CLOSE */
@@ -185,17 +212,17 @@ transform:scale(1.15);
 position:absolute;
 top:20px;
 right:28px;
-font-size:32px;
+font-size:34px;
 color:#fff;
-z-index:1020;
 cursor:pointer;
+z-index:1100;
 }
 
 /* CAPTION */
 .overlayCaption{
 margin-top:14px;
-color:#fff;
 font-size:11px;
+color:#fff;
 text-align:center;
 }
 
@@ -219,21 +246,41 @@ text-align:center;
 <div class="track" id="track"></div>
 </div>
 
+<!-- OVERLAY -->
 <div class="overlay" id="overlay">
-<div class="overlayNav left" onclick="prevDetail(event)"><div class="overlayArrow">◀</div></div>
-<div class="overlayNav right" onclick="nextDetail(event)"><div class="overlayArrow">▶</div></div>
+
+<div class="overlayNav left" onclick="prevDetail(event)">
+<div class="overlayArrow">◀</div>
+</div>
+
+<div class="overlayNav right" onclick="nextDetail(event)">
+<div class="overlayArrow">▶</div>
+</div>
+
 <div class="close" onclick="closeOverlay()">×</div>
+
+<div class="overlayInner">
 <img id="overlayImg">
 <div class="overlayCaption" id="caption"></div>
 </div>
 
+</div>
+
 <script>
 
-/* WORKS */
+/* =========================
+   WORKS
+========================= */
+
 const works = [
 {
 title:"ROWS",
-images:["SR-rows.JPG","SR-rows-D1.JPG","SR-rows-D2.JPG","SR-rows-D3.JPG"]
+images:[
+"SR-rows-D1.JPG",
+"SR-rows-D2.JPG",
+"SR-rows-D3.JPG",
+"SR-rows.JPG"
+]
 },
 {
 title:"COIL I",
@@ -241,21 +288,51 @@ images:["SR-coil(I).webp"]
 },
 {
 title:"COIL IX",
-images:["SR-coil(IX).JPG","SR-coil(IX)-D1.JPG","SR-coil(IX)-D2.JPG"]
+images:[
+"SR-coil(IX)-D1.JPG",
+"SR-coil(IX)-D2.JPG",
+"SR-coil(IX).JPG"
+]
+},
+{
+title:"ROLLS INSTALLATION",
+images:[
+"SR-rolls-D1.jpeg",
+"SR-rolls-D2.jpeg",
+"SR-rollsinstall.jpeg"
+]
 },
 {
 title:"SCATTER",
-images:["SR-scatter.JPG","SR-scatter-D1.JPG"]
+images:[
+"SR-scatter-D1.JPG",
+"SR-scatter.JPG"
+]
+},
+{
+title:"STACK",
+images:["SR-stack.JPG"]
 },
 {
 title:"TUBES",
-images:["SR-tubes.JPG","SR-tubes-D1.JPG"]
+images:[
+"SR-tubes-D1.JPG",
+"SR-tubes.JPG"
+]
 }
 ];
 
-/* TRUE INFINITE LOOP (NO SNAP BACK) */
+/* =========================
+   TRUE INFINITE LOOP
+========================= */
+
 const track = document.getElementById("track");
-const loop = [...works, ...works, ...works];
+
+/* large buffer for seamless motion */
+const loop = [];
+for(let i=0;i<20;i++){
+loop.push(...works);
+}
 
 loop.forEach((w,i)=>{
 const slide = document.createElement("div");
@@ -263,21 +340,27 @@ slide.className = "slide";
 
 slide.innerHTML = `
 <div class="imageWrap">
-<img src="${w.images[0]}">
+<img src="${w.images[w.images.length-1]}">
+</div>
+
+<div class="caption">
+<div><i>${w.title}</i></div>
 </div>
 `;
 
-slide.querySelector("img").onclick = () => open(i % works.length);
+slide.querySelector("img").onclick = () => openOverlay(i % works.length);
 
 track.appendChild(slide);
 });
 
 const slides = document.querySelectorAll(".slide");
 
-/* START POSITION (COIL IX CENTERED) */
-let current = works.length + 2;
+let current = Math.floor(loop.length/2) + 2;
 
-/* RENDER */
+/* =========================
+   POSITIONING
+========================= */
+
 function render(){
 
 let offset = 0;
@@ -286,60 +369,78 @@ for(let i=0;i<current;i++){
 offset += slides[i].offsetWidth + 30;
 }
 
-const center = (window.innerWidth/2) - (slides[current].offsetWidth/2);
+const center =
+(window.innerWidth/2) -
+(slides[current].offsetWidth/2);
 
-track.style.transform = `translateX(${center - offset}px)`;
+track.style.transform =
+`translateX(${center - offset}px)`;
 
 slides.forEach(s=>s.classList.remove("active"));
 slides[current].classList.add("active");
 }
 
-/* INFINITE (NO VISUAL RESET) */
+/* smooth infinite motion */
 function next(){
 current++;
 render();
-if(current >= works.length * 2) current -= works.length;
+if(current > loop.length - 40) current -= works.length;
 }
 
 function prev(){
 current--;
 render();
-if(current < works.length) current += works.length;
+if(current < 40) current += works.length;
 }
 
-/* OVERLAY */
-let active = null;
+/* =========================
+   OVERLAY LOGIC
+========================= */
+
+let activeWork = null;
 let dIndex = 0;
 
-function open(i){
-active = works[i];
+function openOverlay(i){
+
+activeWork = works[i];
+
+/* ensure correct order already built */
 dIndex = 0;
-show();
+
 document.getElementById("overlay").classList.add("active");
+
+showDetail();
 }
 
-function show(){
-document.getElementById("overlayImg").src = active.images[dIndex];
-document.getElementById("caption").innerText = active.title;
+function showDetail(){
+
+document.getElementById("overlayImg").src =
+activeWork.images[dIndex];
+
+document.getElementById("caption").innerHTML =
+`<div><i>${activeWork.title}</i></div>`;
 }
 
 function nextDetail(e){
 e.stopPropagation();
-dIndex = (dIndex + 1) % active.images.length;
-show();
+dIndex = (dIndex + 1) % activeWork.images.length;
+showDetail();
 }
 
 function prevDetail(e){
 e.stopPropagation();
-dIndex = (dIndex - 1 + active.images.length) % active.images.length;
-show();
+dIndex = (dIndex - 1 + activeWork.images.length) % activeWork.images.length;
+showDetail();
 }
 
 function closeOverlay(){
 document.getElementById("overlay").classList.remove("active");
 }
 
-/* INIT */
+/* =========================
+   INIT
+========================= */
+
 window.addEventListener("load", render);
 window.addEventListener("resize", render);
 
