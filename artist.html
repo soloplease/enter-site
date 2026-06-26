@@ -1,92 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Solomon Rousseau — Artist</title>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Helvetica, Arial, sans-serif;
-      background: #fff;
-      color: #111;
-      line-height: 1.6;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: row;
-      gap: 60px;
-      padding: 60px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .image-column {
-      flex: 1;
-    }
-
-    .image-column img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .text-column {
-      flex: 1.2;
-      font-size: 14px;
-    }
-
-    .name {
-      font-size: 18px;
-      margin-bottom: 20px;
-      letter-spacing: 0.5px;
-    }
-
-    .bio p {
-      margin-bottom: 18px;
-      white-space: pre-line;
-    }
-
-    @media (max-width: 900px) {
-      .container {
-        flex-direction: column;
-        padding: 30px;
-        gap: 30px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-
-    <!-- IMAGE -->
-    <div class="image-column">
-      <img src="SR-portrait1.JPG" alt="Solomon Rousseau portrait" />
-    </div>
-
-    <!-- TEXT -->
-    <div class="text-column">
-      <div class="name">Solomon Rousseau</div>
-
-      <div class="bio">
-        <p>Solomon Rousseau is a Jamaican-American artist currently based in Los Angeles. His practice spans painting, sculpture, installation and photography. By exploring how repetition, reduction, and physical process can yield forms and experiences that are primitive and formal, the artist engages the legacies of Minimalism, Post-Minimalism, and Mono-Ha among others, pursuing investigation of the quiet tension between control and impermanence.</p>
-
-        <p>Rousseau's work is a meditation- a laborious rhythm of destruction and creation seeking harmony between the worlds of Dionysus and Apollo, chaos and order, instinct and precision. His process is alchemical and materialist, where chance and ambiguity are married to structure, through the use of utilitarian industrial materials both raw and refined, organic and synthetic. Each work is rigorously built by instinctual gesture and measured construction, so that the materials are not used to depict but to reveal traces of transformation — their textures and densities become records of touch, gravity, and time.</p>
-
-        <p>The artist’s hand, though transparent and legible, is light, its gestures echoing natural accidents and overlooked phenomena. This invisible labor, understood as an existential condition, blurs the boundary between making and being. The resulting works dwell in superposition — suspended between presence and absence, matter and thought. They are not representations, but encounters: inviting the viewer to pause, to inhabit the interval between seeing and feeling, and to sense the resonance of matter as it simply exists, where silence, space, and process become the true medium.</p>
-
-        <p>This enlightened approach has evolved through an unconventional path of study, independent of institutions, shaped instead by autodidactic research and residencies in Sweden, Indonesia, Mexico, Japan and France. Following his first solo exhibition in 2020 at the Bendix Building in Los Angeles, he became locked out abroad during the pandemic and spent two years living in solitude in the Colombian Andes Mountains- an experience that deepened the introspective nature of his practice. Since returning to Los Angeles, Rousseau has begun to exhibit again, including Giovanni’s Room (Los Angeles, 2024), Redacted Art Fair (Los Angeles, 2025), Silke Lindner (New York, 2025).</p>
-
-        <p>As Solomon Rousseau continues to exhibit and develop his various bodies of work, new sculptural series and site-responsive installations are in progress, signaling the next phase of his evolving artistic practice.</p>
-      </div>
-    </div>
-
-  </div>
-
-</body>
-</html>
+<html><head><meta charset="UTF-8"><title>Artist</title>
+<style>
+body{margin:0;background:#f8f8f4;font-family:Arial,sans-serif;color:#111}
+.name{position:fixed;top:16px;left:24px;font-size:18px;font-weight:bold}
+.links{position:fixed;top:24px;right:24px;display:flex;gap:22px}
+.links a{text-decoration:none;color:#111;font-size:11px;text-transform:uppercase}
+.links a:hover{font-weight:bold;font-size:12px}.active{font-style:italic}
+.container{max-width:1280px;margin:90px auto 60px;padding:0 60px;display:grid;grid-template-columns:42% 58%;gap:70px}
+.portrait{position:sticky;top:90px}.portrait img{width:100%;display:block}
+.bio{font-size:13px;line-height:1.75;max-width:620px}.bio p{margin:0 0 26px}
+@media(max-width:900px){.container{grid-template-columns:1fr;padding:0 30px}.portrait{position:static}.links{right:18px;gap:14px;flex-wrap:wrap;justify-content:flex-end}}
+</style></head><body>
+<div class="name">SOLOMON ROUSSEAU</div>
+<div class="links">
+<a href="selected-works.html">SELECTED WORKS</a>
+<a href="exhibitions.html">SELECTED EXHIBITIONS + RESIDENCIES</a>
+<a href="acquisitions.html">ACQUISITIONS</a>
+<a href="artist.html" class="active">ARTIST</a>
+</div>
+<div class="container">
+<div class="portrait"><img src="SR-portrait1.JPG" alt="Solomon Rousseau"></div>
+<div class="bio">
+<p>Solomon Rousseau is a Jamaican-American artist currently based in Los Angeles. His practice spans painting, sculpture, installation and photography. By exploring how repetition, reduction, and physical process can yield forms and experiences that are primitive and formal, the artist engages the legacies of Minimalism, Post-Minimalism, and Mono-Ha among others, pursuing investigation of the quiet tension between control and impermanence.</p>
+<p>Rousseau's work is a meditation- a laborious rhythm of destruction and creation seeking harmony between the worlds of Dionysus and Apollo, chaos and order, instinct and precision. His process is alchemical and materialist, where chance and ambiguity are married to structure, through the use of utilitarian industrial materials both raw and refined, organic and synthetic. Each work is rigorously built by instinctual gesture and measured construction, so that the materials are not used to depict but to reveal traces of transformation — their textures and densities become records of touch, gravity, and time.</p>
+<p>The artist’s hand, though transparent and legible, is light, its gestures echoing natural accidents and overlooked phenomena. This invisible labor, understood as an existential condition, blurs the boundary between making and being. The resulting works dwell in superposition — suspended between presence and absence, matter and thought. They are not representations, but encounters: inviting the viewer to pause, to inhabit the interval between seeing and feeling, and to sense the resonance of matter as it simply exists, where silence, space, and process become the true medium.</p>
+<p>This enlightened approach has evolved through an unconventional path of study, independent of institutions, shaped instead by autodidactic research and residencies in Sweden, Indonesia, Mexico, Japan and France. Following his first solo exhibition in 2020 at the Bendix Building in Los Angeles, he became locked out abroad during the pandemic and spent two years living in solitude in the Colombian Andes Mountains- an experience that deepened the introspective nature of his practice. Since returning to Los Angeles, Rousseau has begun to exhibit again, including Giovanni’s Room (Los Angeles, 2024), Redacted Art Fair (Los Angeles, 2025), Silke Lindner (New York, 2025).</p>
+<p>As Solomon Rousseau continues to exhibit and develop his various bodies of work, new sculptural series and site-responsive installations are in progress, signaling the next phase of his evolving artistic practice.</p>
+</div></div></body></html>
